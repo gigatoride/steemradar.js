@@ -1,0 +1,38 @@
+{
+  "name": "steemradar",
+  "version": "0.0.1",
+  "description": "A radar that will never miss a bit in Steem blockchain.",
+  "main": "./src/index.js",
+  "scripts": {
+    "test": "jest --detectOpenHandles"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gigatoride/steemradar.git"
+  },
+  "keywords": [
+    "activity",
+    "steem",
+    "blockchain"
+  ],
+  "bin": {
+    "steemradar": "./src/bin/index.js"
+  },
+  "author": "gigatoride",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/gigatoride/steemradar/issues"
+  },
+  "homepage": "https://github.com/gigatoride/steemradar#readme",
+  "dependencies": {
+    "bad-words": "^1.6.3",
+    "bluebird": "^3.5.2",
+    "chalk": "^2.4.1",
+    "dateformat": "^3.0.3",
+    "inquirer": "^6.2.0",
+    "steem": "^0.7.1"
+  },
+  "devDependencies": {
+    "jest": "^23.6.0"
+  }
+}
