@@ -23,9 +23,12 @@ module.exports = {
                     resolve(false); // Resolve false (not valid)
                 }
             }).catch(reject)), // Catch error by reject
-    compareTs: (first, last) =>
-        first.findIndex(obj =>
-            !last.includes(obj.timestamp)), // Check if it has the same timestamp
+    compareTsDub: (first, last) => {
+        for (const i in last) // Check all last array elements.
+            if (first.some(obj => last[i].timestamp.includes(obj.timestamp))) // Check if it has the same timestamp
+                return true // Return true if it is the same array
+        return false; // Return false if it is different array
+    }, 
     isMemo: (memoKey, memo) => {
         try {
             return steem.memo.decode(memoKey, memo); // Try to decode memo key

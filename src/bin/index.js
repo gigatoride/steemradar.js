@@ -136,8 +136,8 @@ inquirer.prompt(questions).then(answers => {
             });
             break;
         case 'last time user was active': // In case of transfers
-            detector.activity.detect(answers.username, (timestamp) => { // Start monitoring blockchain by user inputs
-                log(chalk.cyanBright(answers.username) + ' last activity: ' + (timestamp === 0) ? dateFormat(timestamp, "dddd, mmmm dS, yyyy, h:MM:ss TT") : 'inactive') // Log it
+            detector.activity.detect([answers.username], (ts) => { // Start monitoring blockchain by user inputs
+                log(chalk.cyanBright(answers.username) + ' last activity: ' + chalk.yellowBright(dateFormat(ts[0].timestamp, "dddd, mmmm dS, yyyy, h:MM:ss TT"))) // Log it
             })
             break;
         case 'memos received': // In case of `memos received`

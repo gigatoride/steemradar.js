@@ -84,21 +84,21 @@ module.exports = {
          */
         detect: (usernames, callback) => { // detect user activity.
             if (!utils.isUsername(usernames)) throw new Error('Username is not valid or exist.'); // Check if usernames are valid
-            let status = false; // Save latest activity and to compare it with the current one.
+            let last = false; // Save latest activity and to compare it with the current one.
             this.run = true; // Toggle run for updating.
             const update = () => { // Keep updating any further activities by callback timestamp.
                 if (!this.run) return; // If run is false stop updating.
                 steem.api.getAccountsAsync(usernames) // Request account history
                     .then(res => {
-                        if (!status) status = res.map(obj => {
+                        res = res.map(obj => { // Detector filter activity object
                             return {
                                 username: obj.name, // Username
                                 timestamp: obj.last_bandwidth_update // Get latest bandwidth update
                             }
-                        })
-                        if (utils.compareTs(status, res) !== -1) { // Compare the last array of objects with pervious one.
-                            status = res; // Update with latest result
-                            callback(res); // Callback by timestamp
+                        });
+                        if (!last || !utils.compareTsDub(last, res)) {
+                            last = res;
+                            callback(last); // Callback by timestamp
                         }
                         // Will return last time the user had been active based on blockchain.
                         Promise.delay(300).then(update).catch(callback); // Promise for updating callbacks and error handler.
