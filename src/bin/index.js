@@ -142,11 +142,13 @@ inquirer.prompt(questions).then(answers => {
             break;
         case 'memos received': // In case of `memos received`
             detector.memo.detect(answers.wif, answers.username, (msg) => { // Start monitoring blockchain by user inputs
+                if (Array.isArray(msg)) {
                 let [from, amount, memo] = msg; // Convert object into local variables.
-                if (amount.includes('0.001')) { // Amount of transaction 0.001 sbd or detector
-                    log(chalk.cyanBright(from) + ' sent you a memo: ' + chalk.magentaBright(memo)); // Log it & dont view that tiny amount
-                } else {
-                    log(chalk.cyanBright(from) + ' sent you a memo: ' + chalk.magentaBright(memo) + ' with an amount of ' + chalk.yellowBright(amount)); // Log it
+                    if (amount.includes('0.001')) { // Amount of transaction 0.001 sbd or detector
+                        log(chalk.cyanBright(from) + ' sent you a memo: ' + chalk.magentaBright(memo)); // Log it & dont view that tiny amount
+                    } else {
+                        log(chalk.cyanBright(from) + ' sent you a memo: ' + chalk.magentaBright(memo) + ' with an amount of ' + chalk.yellowBright(amount)); // Log it
+                    }
                 }
             })
             break;

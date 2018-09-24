@@ -120,28 +120,32 @@ module.exports = {
             utils.isMemoKey(memoKey, username).then((isMemo) => {
                 if (!isMemo) throw new Error('Memo key is not valid.') // Check username
             })
+            let latest_timestamp;
             this.run = true; // Start updating
             const update = () => {
                 if (!this.run) return; // If run is false stop updating.
                 steem.api.getAccountHistoryAsync(username, -1, 100).then(res => {
                     let transfer;
                     // Reserve for the first activity becomes the last, and the last activity becomes the first.
-                    const received = res.reverse().find(obj => obj[1].op[0] === 'transfer' && obj[1].op[1].to === username)[1].op[1]
+                    const received = res.reverse().find(obj => obj[1].op[0] === 'transfer' && obj[1].op[1].to === username)
                     const {
                         from, // Sender
                         to, // Receiver
                         amount, // Amount of SBD/STEEM
                         memo // Transaction MEMO
-                    } = received; // Convert the matches object into local variables
-                    if (memo !== '' && memoKey !== null) { // Check if private memo
-                        if (memo.charAt(0) === '#') {
-                            let privateMemo = utils.isMemo(memoKey, memo);
-                            transfer = (privateMemo !== false) ? [from, amount, privateMemo] : [from, amount, 'Wrong Memo Key.'];
-                        } else
-                            transfer = [from, amount, '[Private Memo]']; // It is private memo in case of (no wif key)
-                    } else
-                        transfer = [from, amount, memo]; // It is public memo
-                    callback(transfer);
+                    } = received[1].op[1]; // Convert the matches object into local variables
+                    if (latest_timestamp !== received[1].timestamp) {
+                        latest_timestamp = received[1].timestamp;
+                        if (memo !== '') // Check if private memo
+                            if (memo.charAt(0) === '#' && memoKey !== null) {
+                                let privateMemo = utils.isMemo(memoKey, memo);
+                                transfer = (privateMemo !== false) ? [from, amount, privateMemo] : [from, amount, 'Wrong Memo Key.'];
+                            } else
+                                transfer = [from, amount, memo]; // It is private memo in case of (no wif key)
+                        else
+                            transfer = [from, amount, memo]; // It is public memo
+                        callback(transfer);
+                    }
                     Promise.delay(300).then(update).catch(callback); // Promise for updating callbacks and error handler.
                 }).catch(callback);
             }
