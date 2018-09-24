@@ -25,27 +25,23 @@ module.exports = {
             }
             if (!typeof parseInt(min_amount) === 'number' && !/(SBD|STEEM|\|)/.test(min_amount)) throw new Error('Target amount is not valid expected 0.000 STEEM|SBD.'); // Check if senders has a valid array.
             this.release = steem.api.streamTransactions('head', (err, res) => { // Listing for blockchain transactions.
-                if (err === null) { // Check if there is no errors before doing anything.
-                    let {
+                if (err === null && res.operations[0][0] == 'transfer') { // Check if there is no errors before doing anything.
+                    const {
                         from, // Sender
                         to, // Receiver
                         amount, // Amount of SBD/STEEM
                         memo // Transaction MEMO
                     } = res.operations[0][1]; // Convert the matches object into local variables.
-                    if (res.operations[0][0] == 'transfer') { // Check operation type, Ternary operator for passing null as true instead of array
-                        if ((senders === null) ? true : senders.includes(from))
-                            if ((receivers === null) ? true : receivers.includes(to)) { // Ternary operator passing null as true instead of array
-                                if ((target_memo === null) ? true : memo.includes(target_memo)) { // Check if memo matches
-                                    let [user_amount, currency] = min_amount.split(' '); // Convert min_amount to array then local variables
-                                    reAmount = new RegExp(currency); // Convert to array then use type of currency (SBD, STEEM, STEEM|SBD) as regular expression.                     
-                                    if (reAmount.test(amount)) {
-                                        if (parseFloat(user_amount) <= parseFloat(amount)) // Check if transfer account is bigger than or equal min_amount
-                                            callback(res); // Callback transaction object
-                                    }
-                                }
-                            }
+                    // Check operation type, Ternary operator for passing null as true instead of array
+                    if ((senders === null) ? true : senders.includes(from) && // Check senders
+                        (receivers === null) ? true : receivers.includes(to) && // Check receivers
+                        (target_memo === null) ? true : memo.includes(target_memo)) { // Check memo
+                        const [target_amount, currency] = min_amount.split(/\s/); // Split min_amount to array then local variables with value and name of currency
+                        reAmount = new RegExp(currency); // Convert to array then use type of currency (SBD, STEEM, STEEM|SBD) as regular expression.                     
+                        if (reAmount.test(amount) && parseFloat(target_amount) <= parseFloat(amount)) // Check if transfer account is bigger than or equal min_amount
+                            callback(res); // Callback transaction object
                     }
-                } else
+                } else if (err !== null)
                     callback(err); // Callback error.
             });
         },
