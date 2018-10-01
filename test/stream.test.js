@@ -1,6 +1,6 @@
 const steemradar = require("../src");
 
-jest.setTimeout(35000); // We have to wait some time for hunt :)
+jest.setTimeout(125000); // We have to wait some time for hunt :)
 
 test("Detect a transfer that has an amount greater than or equal 0.199 SBD/STEEM", done => {
     let senders = null,
@@ -11,6 +11,15 @@ test("Detect a transfer that has an amount greater than or equal 0.199 SBD/STEEM
     steemradar.transfer.detect(senders, min_amount, receivers, target_memo, (res) => {
         steemradar.transfer.stop(); // Stop streaming after getting a result.
         expect(parseFloat(res.operations[0][1].amount)).toBeGreaterThanOrEqual(0.199);
+        done();
+    });
+});
+
+test("Detect public profane word", done => {
+
+    steemradar.profane.detect(null, (res) => {
+        steemradar.profane.stop(); // Stop streaming after getting a result.
+        expect(Array.isArray(res)).toBeTruthy();
         done();
     });
 });
