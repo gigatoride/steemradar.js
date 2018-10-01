@@ -1,6 +1,12 @@
 {
-  "extends": ["plugin:prettier/recommended"],
+  "extends": ["prettier"],
+  "plugins": ["prettier"],
+  "rules": {
+    "prettier/prettier": "warn"
+  },
   "parserOptions": {
-    "ecmaVersion": 6
+    "ecmaVersion": 6,
+    "node": true,
+    "jest": true
   }
 }

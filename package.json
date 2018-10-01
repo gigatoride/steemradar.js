@@ -2,7 +2,7 @@
   "name": "steemradar",
   "version": "0.0.2",
   "description": "A radar that will never miss a bit in Steem blockchain.",
-  "main": "./src/index.js",
+  "main": "./src",
   "scripts": {
     "test": "jest --detectOpenHandles"
   },
@@ -16,7 +16,7 @@
     "blockchain"
   ],
   "bin": {
-    "steemradar": "./src/bin/tool.js"
+    "steemradar": "./bin/tool.js"
   },
   "author": "gigatoride",
   "license": "MIT",
