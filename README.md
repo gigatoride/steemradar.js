@@ -53,10 +53,10 @@ Stream example for detecting a transfer:
     // Senders,target_memo can be ignored by null and receivers as well.
     // Minimum amount string examples "0.001 SBS", "0.001 STEEM", "0.001 SBD|STEEM"
     // Target memo should be a string
-    steemradar.transfer.detect(senders, min_amount, receivers, target_memo, (res) => {
+    steemRadar.transfer.detect(senders, min_amount, receivers, target_memo, (res) => {
         // It will callback an object for all transfer details.
         if(something) {
-        steemradar.transfer.stop(); // Stop streaming after getting a result.
+        steemRadar.transfer.stop(); // Stop streaming after getting a result.
         } else {
             // Do Something
         }
@@ -68,9 +68,10 @@ Stream example for latest user activity timestamp:
 
 ```js
     // Username should be string it will callback timestamp
-    steemradar.activity.detect(username, (timestamp) => {
+    steemRadar.activity.detect(usernames, (res) => {
+        // Result is an array has an objects for each username and timestamp.
         if(something) {
-            steemradar.activity.stop(); // Stop streaming after getting a result.
+            steemRadar.activity.stop(); // Stop streaming after getting a result.
         } else {
             // Do Something
         }
@@ -81,10 +82,10 @@ Stream example for detecting profane words with author:
 
 ```js
     // Use null as username to detect all blockchain accounts
-    steemradar.profane.detect(username, (res) => {
+    steemRadar.profane.detect(username, (res) => {
         let [word, author] = res; // Convert to local variables.
         if(something) {
-        steemradar.profane.stop(); // Stop streaming after getting a result.
+        steemRadar.profane.stop(); // Stop streaming after getting a result.
         } else {
             // Do Something
         }
@@ -95,10 +96,10 @@ Stream example for latest user memo has been received:
 
 ```js
     // Username should be always string, memo key can be null
-    steemradar.memo.detect(memoKey, username, (res) => {
+    steemRadar.memo.detect(memoKey, username, (res) => {
         let [from, amount, memo] = res; // Convert to local variables.
         if(something) {
-        steemradar.memo.stop(); // Stop streaming after getting a result.
+        steemRadar.memo.stop(); // Stop streaming after getting a result.
         } else {
             // Do Something
         }
