@@ -1,6 +1,6 @@
 {
   "name": "steemradar",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "A radar that will never miss a bit in Steem blockchain.",
   "main": "./src",
   "scripts": {

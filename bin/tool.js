@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-const detector = require('../lib/detector'); // The core file for everything here.
+const steemRadar = require('./../src'); // The core file for everything here.
 const inquirer = require('inquirer'); // For command line questions
 const dateFormat = require('dateformat'); // To parse timestamp strings or reformat an exist date.
 const chalk = require('chalk'); // For colored log.
@@ -161,7 +161,7 @@ inquirer.prompt(questions).then(answers => {
         username = null;
       // Scan in all blockchain
       else username = answers.username; // Scan by username
-      detector.profane.detect(username, detected => {
+      steemRadar.profane.detect(username, detected => {
         // Start monitoring blockchain by user inputs
         let [word, author] = detected; // Convert object into local variables.
         log(
@@ -170,7 +170,7 @@ inquirer.prompt(questions).then(answers => {
       });
       break;
     case 'last time user was active': // In case of transfers
-      detector.activity.detect([answers.username], ts => {
+      steemRadar.activity.detect([answers.username], ts => {
         // Start monitoring blockchain by user inputs
         log(
           chalk.cyanBright(answers.username) +
@@ -180,7 +180,7 @@ inquirer.prompt(questions).then(answers => {
       });
       break;
     case 'memos received': // In case of `memos received`
-      detector.memo.detect(answers.wif, answers.username, msg => {
+      steemRadar.memo.detect(answers.wif, answers.username, msg => {
         // Start monitoring blockchain by user inputs
         if (Array.isArray(msg)) {
           let [from, amount, memo] = msg; // Convert object into local variables.
