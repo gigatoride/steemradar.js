@@ -1,12 +1,18 @@
 {
-  "extends": ["prettier"],
-  "plugins": ["prettier"],
+  "extends": "google",
   "rules": {
-    "prettier/prettier": "warn"
+    "max-len": [
+      2,
+      {
+        "code": 80,
+        "comments": 120,
+        "ignoreTrailingComments": true,
+        "ignoreRegExpLiterals": true,
+        "ignoreStrings": true
+      }
+    ]
   },
   "parserOptions": {
-    "ecmaVersion": 2017,
-    "node": true,
-    "jest": true
+    "ecmaVersion": 2017
   }
 }
