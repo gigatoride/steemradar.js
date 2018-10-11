@@ -4,11 +4,9 @@
     "max-len": [
       2,
       {
-        "code": 80,
-        "comments": 120,
+        "code": 120,
         "ignoreTrailingComments": true,
-        "ignoreRegExpLiterals": true,
-        "ignoreStrings": true
+        "ignoreRegExpLiterals": true
       }
     ]
   },
