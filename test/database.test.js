@@ -8,7 +8,6 @@ test('Detect any changes for accounts', (done) => {
   const usernames = ['utopian-io', 'blocktrades'];
 
   scan.database.accounts(usernames, (err, res) => {
-    scan.pause(); // Stop streaming after getting a result.
     expect(Array.isArray(res)).toBeTruthy();
     done();
   });

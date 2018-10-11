@@ -146,7 +146,7 @@ class Blockchain {
    */
   profane(username, callback) {
     // Check if username is valid
-    if (usernames && !utils.valid.accountName(username)) throw new Error('Username is not valid or exist.');
+    if (username && !utils.valid.accountName(username)) throw new Error('Username is not valid or exist.');
     // Check callback is a valid function
     if (typeof callback === 'function') {
       this.stream // Stream blockchain operations

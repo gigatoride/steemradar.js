@@ -24,6 +24,8 @@ const SteemRadar = require("steemradar"),
 
 ## Scan Blockchain Stream
 
+This method will keeps tracking transaction flow and will callback results by the matches.
+
 Scan for blacklisted usernames by steem cleaners etc..:
 
 ```js
@@ -48,7 +50,7 @@ Scan for a transfer:
 // Senders,targetMemo can be ignored by null and receivers as well.
 // Minimum amount string examples "0.001 SBD", "0.001 STEEM", "0.001 SBD|STEEM"
 // Target memo should be a string, it can be null too.
-scan.blockchain.transfer(
+scan.blockchain.transfers(
   senders,
   minAmount,
   receivers,
@@ -70,7 +72,7 @@ scan.blockchain.profane(username, (err, res) => {
 
 ## Scan Blockchain Database Stream
 
-`scan.database` method will scan the blockchain database data for any matched results and it will keep streaming the latest updates.
+This method will scan the blockchain database data for any matched results and it will keep streaming the latest updates.
 
 Scan for latest user activity timestamp:
 

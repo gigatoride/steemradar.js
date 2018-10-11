@@ -48,7 +48,7 @@ scan.blockchain.profane(username, (err, res) => {
 ```
 
 ```js
-scan.blockchain.transfer(
+scan.blockchain.transfers(
   senders,
   min_amount,
   receivers,

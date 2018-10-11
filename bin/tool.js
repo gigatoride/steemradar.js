@@ -108,7 +108,7 @@ inquirer.prompt(questions).then((answers) => {
     answers.method // Switch statement for the user choice
   ) {
     case 'transfers': // In case of `transfers`
-      scan.blockchain.transfer(
+      scan.blockchain.transfers(
         answers.send ? answers.senders : null,
         answers.amount + ' ' + answers.coin,
         answers.receive ? answers.receivers : null,
