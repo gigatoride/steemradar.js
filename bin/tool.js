@@ -12,12 +12,7 @@ const questions = [
     type: 'list', // Make a list for the user to choice from
     name: 'method',
     message: 'What do you want to detect?',
-    choices: [
-      'Transfers',
-      'Profane',
-      'Last time user was active',
-      'Memos received',
-    ],
+    choices: ['Transfers', 'Profane', 'Last time user was active', 'Memos received'],
     filter: (val) => val.toLowerCase(), // Convert values to lowercase
   },
   {
@@ -137,9 +132,7 @@ inquirer.prompt(questions).then((answers) => {
                 ${chalk.yellowBright(amount)}`);
           } else {
             log(
-                `Transfer from  ${chalk.cyanBright(from)} to ${chalk.cyan(
-                    to
-                )}  with an amount of ${chalk.yellowBright(
+                `Transfer from  ${chalk.cyanBright(from)} to ${chalk.cyan(to)}  with an amount of ${chalk.yellowBright(
                     amount
                 )} memo: ${chalk.magentaBright(memo)}`
             );
@@ -156,24 +149,15 @@ inquirer.prompt(questions).then((answers) => {
       scan.blockchain.profane(username, (err, detected) => {
         // Start monitoring blockchain by user inputs
         let [word, author] = detected; // Convert object into local variables.
-        log(
-            `A profane has been detected: ${chalk.red(
-                word
-            )} Said: ${chalk.cyanBright(author)}`
-        );
+        log(`A profane has been detected: ${chalk.red(word)} Said: ${chalk.cyanBright(author)}`);
       });
       break;
     case 'last time user was active': // In case of transfers
       scan.database.accounts([answers.username], (err, res) => {
         // Start monitoring blockchain by user inputs
         log(
-            `@${chalk.cyanBright(
-                answers.username
-            )} last activity: ${chalk.yellowBright(
-                dateFormat(
-                    res[0].last_bandwidth_update,
-                    'dddd, mmmm dS, yyyy, h:MM:ss TT'
-                )
+            `@${chalk.cyanBright(answers.username)} last activity: ${chalk.yellowBright(
+                dateFormat(res[0].last_bandwidth_update, 'dddd, mmmm dS, yyyy, h:MM:ss TT')
             )}`
         ); // Log it
       });
@@ -185,15 +169,9 @@ inquirer.prompt(questions).then((answers) => {
           let [from, amount, memo] = msg; // Convert object into local variables.
           if (amount.includes('0.001')) {
             // Amount of transaction 0.001 sbd or detector
-            log(
-                `${chalk.cyanBright(from)} sent you a memo: ${chalk.magentaBright(
-                    memo
-                )}`
-            ); // Log it & dont view that tiny amount
+            log(`${chalk.cyanBright(from)} sent you a memo: ${chalk.magentaBright(memo)}`); // Log it & dont view that tiny amount
           } else {
-            log(`${chalk.cyanBright(
-                from
-            )} sent you a memo: ${chalk.magentaBright(
+            log(`${chalk.cyanBright(from)} sent you a memo: ${chalk.magentaBright(
                 memo
             )} with an amount of ${chalk.yellowBright(amount)}
             `); // Log it
