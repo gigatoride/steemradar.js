@@ -1,6 +1,6 @@
 {
   "name": "steemradar",
-  "version": "0.0.4",
+  "version": "0.0.7",
   "description": "A radar that will never miss a bit in Steem blockchain.",
   "main": "./src",
   "scripts": {
@@ -13,7 +13,10 @@
   "keywords": [
     "activity",
     "steem",
-    "blockchain"
+    "blockchain",
+    "radar",
+    "monitor",
+    "alerts"
   ],
   "bin": {
     "steemradar": "./bin/tool.js"
@@ -25,18 +28,17 @@
   },
   "homepage": "https://github.com/gigatoride/steemradar#readme",
   "dependencies": {
+    "axios": "^0.18.0",
     "bad-words": "^1.6.3",
-    "bluebird": "^3.5.2",
     "chalk": "^2.4.1",
     "dateformat": "^3.0.3",
+    "dsteem": "^0.10.1",
     "inquirer": "^6.2.0",
-    "steem": "^0.7.1"
+    "node-utopian-rocks": "^0.1.7"
   },
   "devDependencies": {
-    "eslint": "^5.6.0",
-    "eslint-config-prettier": "^3.1.0",
-    "eslint-plugin-prettier": "^2.6.2",
-    "jest": "^23.6.0",
-    "prettier": "1.14.3"
+    "eslint": "^5.6.1",
+    "eslint-config-google": "^0.10.0",
+    "jest": "^23.6.0"
   }
 }
