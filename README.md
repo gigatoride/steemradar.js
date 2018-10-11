@@ -25,7 +25,7 @@ npm install steemradar
 Then
 
 ```js
-const SteemRadar = require("SteemRadar"),
+const SteemRadar = require("steemradar"),
   scan = new SteemRadar.Scan({ node: "https://api.steemit.com" });
 ```
 
@@ -69,7 +69,7 @@ for full [documentation](https://github.com/gigatoride/steemradar/tree/master/do
 
 ## Contribute
 
-All contributions are welcome by opening a [new pull request](https://github.com/gigatoride/SteemRadar/pulls).
+All contributions are welcome by opening a [new pull request](https://github.com/gigatoride/SteemRadar/pulls), and for suggests or feature request please open a [new issue](https://github.com/gigatoride/SteemRadar/issues/new).
 
 ## Bugs
 
