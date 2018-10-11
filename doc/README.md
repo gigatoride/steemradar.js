@@ -33,6 +33,15 @@ scan.blockchain.blacklist((err, res) => {
 });
 ```
 
+Scan for votes by usernames, minimum weight:
+
+```js
+// Scanning for blacklisted usernames in services like Steem Cleaners and some bid bots etc...
+scan.blockchain.votes(usernames, weight, (err, res) => {
+  if (err === null) console.log(res);
+});
+```
+
 Scan for a transfer:
 
 ```js
@@ -86,7 +95,23 @@ scan.database.memo(username, (err, res) => {
 Scan for any posts added to utopian:
 
 ```js
-scan.utopian.posts((err, res) => {
+scan.utopian.posts(category, (err, res) => {
+  if (err === null) console.log(res);
+});
+```
+
+Scan for latest reviews by moderators:
+
+```js
+scan.utopian.reviews((err, res) => {
+  if (err === null) console.log(res);
+});
+```
+
+Scan for @utopian-io vote:
+
+```js
+scan.utopian.vote((err, res) => {
   if (err === null) console.log(res);
 });
 ```
