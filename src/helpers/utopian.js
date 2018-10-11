@@ -70,7 +70,7 @@ class Utopian extends blockchain {
    * @param {function} callback - callback for err, results.
    * @param {number} ms - milliseconds
    */
-  moderatorsReviews(callback, ms = 200) {
+  reviews(callback, ms = 200) {
     let lastReview; // Save latest post has been extracted.
     const update = async () => {
       // Pause or Resume
