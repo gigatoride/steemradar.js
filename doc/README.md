@@ -37,8 +37,8 @@ Scan for a transfer:
 
 ```js
 // Senders,targetMemo can be ignored by null and receivers as well.
-// Minimum amount string examples "0.001 SBS", "0.001 STEEM", "0.001 SBD|STEEM"
-// Target memo should be a string
+// Minimum amount string examples "0.001 SBD", "0.001 STEEM", "0.001 SBD|STEEM"
+// Target memo should be a string, it can be null too.
 scan.blockchain.transfer(
   senders,
   minAmount,
