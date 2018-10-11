@@ -1,44 +1,25 @@
-const steem = require('steem'); // Steem JS library
-
 module.exports = {
-  isUsername: verify => {
-    if (verify !== null && Array.isArray(verify)) {
-      // Username is not null
-      return verify.some(name => steem.utils.validateAccountName(name) === null) ? true : false; // Verify username array one by one.
-    } else if (typeof username === 'string') {
-      return steem.utils.validateAccountName(verify) === null ? true : false; // Verify username if single
-    } else return true; // Ignore verify if username is null
+  accountName: (username) => {
+    // Return false if username value is falsy
+    if (!username) return false;
+    // Return an array if username(s) not in array.
+    else if (!Array.isArray(username)) username = [username]; // Create an array
+    return username.some(
+        (value) =>
+          value.length < 3 || // Username is less than 3
+        value.length > 16 || // Username is more  than 16
+        /**
+         * Regular Expression:
+         *  Alphabet, Numbers, Dash, Dot with different Capturing groups and Non-Capturing group.
+         *  Each segment must begin with a letter (a-z, English alphabet) and end with a letter or a number (0-9)
+         *  Hyphens (-) must be accompanied side by side by letters or numbers
+         *  no double hyphens. Hyphens can't be at the beginning or end of a segment either because of rule 3
+         */
+        !/^[a-z](-[a-z0-9](-[a-z0-9])*)?(-[a-z0-9]|[a-z0-9])*(?:\.[a-z](-[a-z0-9](-[a-z0-9])*)?(-[a-z0-9]|[a-z0-9])*)*$/.test(
+            value
+        )
+    )
+      ? false
+      : true;
   },
-  isMemoKey: (wif, username, callback) =>
-    steem.api
-      .getAccountsAsync([username])
-      .then(res => {
-        // Promise for account results
-        const memo_public = res[0].memo_key, // Extract public memo key
-          memo_private = wif; // Private memo key
-        if (memo_private === null)
-          // Private Memo key optional if its value is null
-          callback(true); // Resolve by true
-        try {
-          // try,catch for non-valid keys it will return an error of crash!
-          callback(steem.auth.wifIsValid(memo_private, memo_public)); // Resolve true
-        } catch (err) {
-          callback(err); // Resolve false (not valid)
-        }
-      })
-      .catch(callback), // Catch error by reject
-  isTsDup: (first, last) => {
-    for (const i in last) // Check all last array elements.
-      if (first.some(obj => last[i].timestamp.includes(obj.timestamp)))
-        // Check if it has the same timestamp
-        return true; // Return true if it is the same array
-    return false; // Return false if it is different array
-  },
-  isMemo: (memoKey, memo) => {
-    try {
-      return steem.memo.decode(memoKey, memo); // Try to decode memo key
-    } catch (err) {
-      return err; // If error memo key is false
-    }
-  }
 };
