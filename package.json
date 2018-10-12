@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/gigatoride/steemradar.git"
+    "url": "git+https://github.com/gigatoride/steemradar.js.git"
   },
   "keywords": [
     "activity",
@@ -24,9 +24,9 @@
   "author": "gigatoride",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/gigatoride/steemradar/issues"
+    "url": "https://github.com/gigatoride/steemradar.js/issues"
   },
-  "homepage": "https://github.com/gigatoride/steemradar#readme",
+  "homepage": "https://github.com/gigatoride/steemradar.js#readme",
   "dependencies": {
     "axios": "^0.18.0",
     "bad-words": "^1.6.3",

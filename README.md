@@ -1,10 +1,10 @@
-# SteemRadar
+# SteemRadar.js
 
-[![NPM version](https://img.shields.io/npm/v/steemradar.svg)](https://www.npmjs.com/package/steemradar) [![GitHub license](https://img.shields.io/github/license/gigatoride/SteemRadar.svg)](https://github.com/gigatoride/SteemRadar/blob/master/LICENSE)
+[![NPM version](https://img.shields.io/npm/v/steemradar.svg)](https://www.npmjs.com/package/steemradar) [![GitHub license](https://img.shields.io/github/license/gigatoride/steemradar.js.svg)](https://github.com/gigatoride/steemradar.js/blob/master/LICENSE)
 
 ![nfinal.png](https://cdn.steemitimages.com/DQmZj221JXHxdyVAy53dizf29BExu4K9c1CH12MTBsCzUYZ/nfinal.png)
 
-A radar that will never miss a bit in Steem blockchain.
+A JavaScript library for scanning Steem blockchain.
 
 ## Usage
 
@@ -61,19 +61,19 @@ scan.blockchain.transfers(
 
 ```js
 scan.database.accounts(usernames, (err, res) => {
-  if (err === null) console.log(res);
+  console.log(err, res);
 });
 ```
 
-for full [documentation](https://github.com/gigatoride/steemradar/tree/master/doc)
+for full [documentation](https://github.com/gigatoride/steemradar.js/tree/master/doc)
 
 ## Contribute
 
-All contributions are welcome by opening a [new pull request](https://github.com/gigatoride/SteemRadar/pulls), and for suggests or feature request please open a [new issue](https://github.com/gigatoride/SteemRadar/issues/new).
+All contributions are welcome by opening a [new pull request](https://github.com/gigatoride/steemradar.js/pulls), and for suggests or feature request please open a [new issue](https://github.com/gigatoride/steemradar.js/issues/new).
 
 ## Bugs
 
-Bugs is taken seriously as we consider this repository as dependency for other projects. Please open a [new issue](https://github.com/gigatoride/SteemRadar/issues/new) for any bug.
+Bugs is taken seriously as we consider this repository as dependency for other projects. Please open a [new issue](https://github.com/gigatoride/steemradar.js.js/issues/new) for any bug.
 
 ## Donations
 

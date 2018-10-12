@@ -18,14 +18,14 @@ class Utopian extends blockchain {
    * Pause running stream
    */
   pause() {
-    this.running = false; // Pause method
+    this.running = false;
   }
 
   /**
    * Pause resume stream
    */
   resume() {
-    this.running = true; // Resume method
+    this.running = true;
   }
 
   /**
@@ -37,12 +37,10 @@ class Utopian extends blockchain {
   posts(category, callback, ms = 200) {
     let lastPost; // Save latest post has been extracted.
     const update = async () => {
-      // Pause or Resume
       if (this.running) {
         this.post = await utopian.getPosts(category, 'unreviewed');
         if (Array.isArray(this.post)) {
           this.post = this.post.pop();
-          // Check if results is not streamed before.
           if (!lastPost || lastPost !== this.post._id.$oid) {
             lastPost = this.post._id.$oid; // Set latest post
             callback(null, this.post); // Get the last element in array.
@@ -51,7 +49,7 @@ class Utopian extends blockchain {
       }
       await utils.sleep(ms);
       await update();
-    }; // Keep streaming latest post.
+    };
     update();
   }
 
@@ -73,12 +71,10 @@ class Utopian extends blockchain {
   reviews(callback, ms = 200) {
     let lastReview; // Save latest post has been extracted.
     const update = async () => {
-      // Pause or Resume
       if (this.running) {
         this.review = (await utopian.getPosts(null, 'reviewed'));
         if (Array.isArray(this.review)) {
           this.review = this.review.pop();
-          // Check if reviews is not streamed before.
           if (!lastReview || lastReview !== this.review._id.$oid) {
             lastReview = this.review._id.$oid; // Set latest post
             callback(null, this.review); // Get the last element in array.
@@ -87,7 +83,7 @@ class Utopian extends blockchain {
       }
       await utils.sleep(ms);
       await update();
-    }; // Keep streaming latest post.
+    };
     update();
   }
 }

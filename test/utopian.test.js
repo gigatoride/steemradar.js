@@ -13,7 +13,7 @@ test('Detect any contributions to utopian.io', (done) => {
 
 test('Detect any reviews by moderators', (done) => {
   scan.utopian.reviews((err, res) => {
-    scan.pause(); // Stop streaming after getting a result.
+    scan.pause();
     expect(err).toBeNull();
     done();
   });

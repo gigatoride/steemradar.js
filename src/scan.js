@@ -16,7 +16,6 @@ class Scan {
     // If node is not defined use the default config instead.
     this.options = options.node ? options : config;
     this.client = new dsteem.Client(this.options.node);
-    // The following will use the Scan constructor config
     this.blockchain = new blockchain.Blockchain(this); // New instance for Blockchain class
     this.database = new database.Database(this); // New instance for Database class
     this.utopian = new utopian.Utopian(this); // New instance for Utopian class

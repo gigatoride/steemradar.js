@@ -16,7 +16,7 @@ test('Detect any changes for accounts', (done) => {
 test('Detect the database memo has been received by username', (done) => {
   const username = 'blocktrades';
   scan.database.memo(username, (err, res) => {
-    scan.pause(); // Stop streaming after getting a result.
+    scan.pause();
     expect(Array.isArray(res)).toBeTruthy();
     done();
   });

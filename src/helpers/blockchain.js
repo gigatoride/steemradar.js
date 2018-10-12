@@ -16,14 +16,14 @@ class Blockchain {
    * Pause operations stream
    */
   pause() {
-    if (!this.stream.isPaused()) this.stream.pause(); // Pause stream instance if it running.
+    if (!this.stream.isPaused()) this.stream.pause();
   }
 
   /**
    * Resume operations stream
    */
   resume() {
-    if (this.stream.isPaused()) this.stream.pause(); // Resume stream instance if it not running.
+    if (this.stream.isPaused()) this.stream.pause();
   }
 
   /**
@@ -34,7 +34,6 @@ class Blockchain {
    */
   votes(usernames, targetWeight, callback) {
     if (typeof targetWeight !== 'number') throw new Error('weight is not a valid number');
-    // Check if username is valid
     if (usernames && !utils.valid.accountName(usernames)) throw new Error('Username is not valid or exist.');
     if (typeof callback === 'function') {
       this.stream
@@ -45,7 +44,7 @@ class Blockchain {
             }
           })
           .on('error', callback);
-    } else throw new Error('Callback is not a function'); // Throw an error if callback is not a function
+    } else throw new Error('Callback is not a function');
   }
   /**
    * Scan for any blacklisted user on blockchain latest blocks.
@@ -66,7 +65,6 @@ class Blockchain {
                 username = txData.author;
                 break;
               default:
-              // The default username should be null
                 username = null;
                 break;
             }
@@ -88,18 +86,13 @@ class Blockchain {
    * @param {function} callback - a callback for the results
    */
   transfers(senders, minAccount, receivers, targetMemo, callback) {
-    // Check receivers is null or in array
     if (receivers) {
       if (!Array.isArray(receivers)) throw new Error('Receivers are not in array.');
-      // Check if senders has a valid array.
       if (receivers && !utils.valid.accountName(receivers)) throw new Error('Receivers are not valid.');
-      // Check all receivers
     }
-    // Check senders is null or in array
     if (senders) {
       if (!Array.isArray(senders)) throw new Error('Senders are not in array.'); // Check if senders has a valid array.
       if (senders && !utils.valid.accountName(senders)) throw new Error('Senders are not valid.');
-      // Check all senders
     }
 
     // Check if senders has a valid array.
@@ -112,9 +105,7 @@ class Blockchain {
           .on('data', (operation) => {
             const [txType, txData] = operation.op;
             if (txType == 'transfer') {
-            // Check if there is no errors before doing anything.
               const {from, to, amount, memo} = txData; // destructing the matches object into local variables.
-              // Check operation type, Ternary operator for passing null as true instead of array
               if (
               !senders
                 ? true
@@ -134,7 +125,6 @@ class Blockchain {
               }
             }
           })
-      // Callback stream error.
           .on('error', callback);
     } else throw new Error('Callback is not a function');
   }
@@ -151,16 +141,12 @@ class Blockchain {
     if (typeof callback === 'function') {
       this.stream // Stream blockchain operations
           .on('data', (operation) => {
-          // Stream latest blockchain transaction
             const [txType, txData] = operation.op;
-            // Check if error is null and operation type is comment
             switch (txType) {
               case 'comment':
               // Check type of transaction
                 if (!username || txData.author === username) {
-                // Check if username is not null
                   const word = utils.filter.profaneWord(txData.body); // Check word is profane or not
-                  // String means it is a profane anything else will be false.
                   if (typeof word === 'string') {
                     const badWord = [word, txData.author];
                     callback(null, badWord);
@@ -170,9 +156,7 @@ class Blockchain {
               case 'transfer':
               // Check type of transaction
                 if (!username || txData.from === username) {
-                // Check if username is not null
                   const word = utils.filter.profaneWord(txData.memo); // Check word is profane or not
-                  // String means it is a profane anything else will be false.
                   if (typeof word === 'string') {
                     const badWord = [word, txData.author];
                     callback(null, badWord);
@@ -183,11 +167,9 @@ class Blockchain {
                 break;
             }
           })
-      // Callback stream error.
           .on('error', callback);
-    } else throw new Error('Callback is not a function'); // Throw an error if callback is not a function
+    } else throw new Error('Callback is not a function');
   }
 }
-
 // Exports Blockchain class
 exports.Blockchain = Blockchain;

@@ -6,7 +6,7 @@ const utils = require('../utils'); // Some utils
 class Database {
   /**
    * Database Scan contractor
-   * @param {object} options - scan class and it's constructor options
+   * @param {object} options - Scan class and it's constructor options
    */
   constructor(options = {}) {
     this.options = options; // Options object for dsteem client instance.
@@ -17,14 +17,14 @@ class Database {
    * Pause streaming
    */
   pause() {
-    this.running = false; // Pause method
+    this.running = false;
   }
 
   /**
    * Resume streaming
    */
   resume() {
-    this.running = true; // Resume method
+    this.running = true;
   }
 
   /**
@@ -36,7 +36,7 @@ class Database {
   async accounts(usernames, callback, ms = 200) {
     if (!usernames && !utils.valid.accountName(usernames)) {
       throw new Error('Usernames are not valid.');
-    } // Check if username is valid
+    }
     if (typeof callback === 'function') {
       this.running = true; // Toggle run for updating.
       let last = []; // Save latest activity and to compare it with the current one.
@@ -74,7 +74,7 @@ class Database {
   memo(username, callback, ms = 200) {
     if (!username && !utils.valid.accountName(usernames)) {
       throw new Error('Usernames are not valid.');
-    } // Check if username is valid
+    }
     if (typeof callback === 'function') {
       let lastTimestamp;
       this.running = true; // Start updating
@@ -84,9 +84,8 @@ class Database {
           await this.client.database // Client database data
               .call('get_account_history', [username, -1, 100]) // Call account history by latest 100.
               .then((res) => {
-              // Reserve for the first activity becomes the last, and the last activity becomes the first.
                 const received = res
-                    .reverse()
+                    .reverse() // Reserve for the first memo becomes the last, and the last activity becomes the first.
                     .find(
                         (obj) =>
                           obj[1].op[0] === 'transfer' && obj[1].op[1].to === username
