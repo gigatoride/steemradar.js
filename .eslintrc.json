@@ -1,16 +1,9 @@
 {
-  "extends": "google",
+  "extends": "standard",
   "rules": {
-    "max-len": [
-      2,
-      {
-        "code": 120,
-        "ignoreTrailingComments": true,
-        "ignoreRegExpLiterals": true
-      }
-    ]
+    "curly": [2, "multi"]
   },
-  "parserOptions": {
-    "ecmaVersion": 2017
+  "env": {
+    "jest": true
   }
 }

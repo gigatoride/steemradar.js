@@ -1,5 +1,5 @@
-const utils = require('../src/utils');
+const utils = require('../src/utils')
 
 test('Account name validator', async () => {
-  expect(await utils.valid.accountName('steem')).toBeTruthy();
-});
+  expect(await utils.valid.accountName('steem')).toBeTruthy()
+})

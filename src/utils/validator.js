@@ -1,12 +1,12 @@
 module.exports = {
-  accountName: (username) => {
+  accountName: username => {
     // Return false if username value is falsy
-    if (!username) return false;
+    if (!username) return false
     // Return an array if username(s) not in array.
-    else if (!Array.isArray(username)) username = [username]; // Create an array
-    return username.some(
-        (value) =>
-          value.length < 3 || // Username is less than 3
+    else if (!Array.isArray(username)) username = [username] // Create an array
+    return !username.some(
+      value =>
+        value.length < 3 || // Username is less than 3
         value.length > 16 || // Username is more  than 16
         /**
          * Regular Expression:
@@ -16,10 +16,8 @@ module.exports = {
          *  no double hyphens. Hyphens can't be at the beginning or end of a segment either because of rule 3
          */
         !/^[a-z](-[a-z0-9](-[a-z0-9])*)?(-[a-z0-9]|[a-z0-9])*(?:\.[a-z](-[a-z0-9](-[a-z0-9])*)?(-[a-z0-9]|[a-z0-9])*)*$/.test(
-            value
+          value
         )
     )
-      ? false
-      : true;
-  },
-};
+  }
+}

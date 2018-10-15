@@ -1,20 +1,20 @@
-const steemradar = require('../src');
+const steemradar = require('../src')
 
-const scan = new steemradar.Scan();
+const scan = new steemradar.Scan()
 
-jest.setTimeout(40000);
+jest.setTimeout(40000)
 
-test('Detect any contributions to utopian.io', (done) => {
+test('Detect any contributions to utopian.io', done => {
   scan.utopian.posts(null, (err, res) => {
-    expect(err).toBeNull();
-    done();
-  });
-});
+    expect(err).toBeNull()
+    done()
+  })
+})
 
-test('Detect any reviews by moderators', (done) => {
+test('Detect any reviews by moderators', done => {
   scan.utopian.reviews((err, res) => {
-    scan.pause();
-    expect(err).toBeNull();
-    done();
-  });
-});
+    scan.pause()
+    expect(err).toBeNull()
+    done()
+  })
+})
