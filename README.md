@@ -2,8 +2,6 @@
 
 [![NPM version](https://img.shields.io/npm/v/steemradar.svg)](https://www.npmjs.com/package/steemradar) [![GitHub license](https://img.shields.io/github/license/gigatoride/steemradar.js.svg)](https://github.com/gigatoride/steemradar.js/blob/master/LICENSE)
 
-![nfinal.png](https://cdn.steemitimages.com/DQmZj221JXHxdyVAy53dizf29BExu4K9c1CH12MTBsCzUYZ/nfinal.png)
-
 A JavaScript library for scanning Steem blockchain.
 
 ## Usage
