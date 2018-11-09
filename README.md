@@ -58,7 +58,7 @@ scan.blockchain.transfers(
 ```
 
 ```js
-scan.database.accounts(usernames, (err, res) => {
+scan.blockchain.accounts(usernames, (err, res) => {
   console.log(err, res);
 });
 ```
