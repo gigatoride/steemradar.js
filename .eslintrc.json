@@ -1,9 +1,7 @@
 {
-  "extends": "standard",
-  "rules": {
-    "curly": [2, "multi"]
-  },
-  "env": {
-    "jest": true
-  }
+    "extends": "standard",
+    "rules": {
+        "semi": [2, "always"],
+        "space-before-function-paren": ["error", "never"]
+    }
 }

@@ -1,36 +1,38 @@
-const dsteem = require('dsteem')
-const blockchain = require('./helpers/blockchain')
-const database = require('./helpers/database')
-const utopian = require('./helpers/utopian')
-const config = require('./../config.json')
+const Blockchain = require('./helpers/blockchain');
+const Database = require('./helpers/database');
+const Utopian = require('./helpers/utopian');
+const defaultConfig = require('./../config.json');
 
 class Scan {
-  constructor (options = {}) {
-    this.options = options.node ? options : config
-    this.client = new dsteem.Client(this.options.node)
-    this.blockchain = new blockchain.Blockchain(this)
-    this.database = new database.Database(this)
-    this.utopian = new utopian.Utopian(this)
+  constructor(options = {}) {
+    this.options =
+      Object.keys(options).length === 0 && options.constructor === Object ? defaultConfig : options;
+
+    this.node = this.options.node;
+
+    this.blockchain = new Blockchain(this);
+    this.database = new Database(this);
+    this.utopian = new Utopian(this);
   }
 
   /**
    * Pause all instances
    */
-  pause () {
-    this.blockchain.pause()
-    this.database.pause()
-    this.utopian.pause()
+  pause() {
+    this.blockchain.pause();
+    this.database.pause();
+    this.utopian.pause();
   }
 
   /**
    * Resume all instances
    */
-  resume () {
-    this.blockchain.resume()
-    this.database.resume()
-    this.utopian.resume()
+  resume() {
+    this.blockchain.resume();
+    this.database.resume();
+    this.utopian.resume();
   }
 }
 
 // Exports class
-exports.Scan = Scan
+exports.Scan = Scan;
