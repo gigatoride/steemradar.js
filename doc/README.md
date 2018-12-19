@@ -1,10 +1,10 @@
 # Documentation
 
--[Install](#install)
--[New Scan](#new-scan)
--[Scan Blockchain Stream](#scan-blockchain-stream)
--[Scan Utopian](#scan-utopian)
--[Pause And Resume](#pause-and-resume)
+- [Install](#install)
+- [New Scan](#new-scan)
+- [Scan Blockchain Stream](#scan-blockchain-stream)
+- [Scan Utopian](#scan-utopian)
+- [Pause And Resume](#pause-and-resume)
 
 ## Install
 
