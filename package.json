@@ -1,6 +1,6 @@
 {
   "name": "steemradar",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "A JavaScript library for Steem blockchain (beta).",
   "main": "./src",
   "scripts": {
