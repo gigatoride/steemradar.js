@@ -4,6 +4,8 @@
 
 A JavaScript library for scanning Steem blockchain (beta).
 
+##### Note: this repo still in beta some commands may changed and will be updated in documentation.
+
 ## Usage
 
 ### Installation
@@ -40,8 +42,10 @@ After that you should interact with the questions then you will get some results
 ### Usage Examples
 
 ```js
-scan.blockchain.profane(username, (err, res) => {
-  console.log(err, res);
+scan.blockchain.profane(username).on("data", (res) => {
+    console.log(res);
+}).on("error", (err){
+    console.log(err);
 });
 ```
 
@@ -50,16 +54,20 @@ scan.blockchain.transfers(
   senders,
   min_amount,
   receivers,
-  target_memo,
-  (err, res) => {
-    console.log(err, res);
-  }
-);
+  target_memo)
+  .on("data", (res) => {
+    console.log(res);
+}).on("error", (err){
+    console.log(err);
+});
 ```
 
 ```js
-scan.blockchain.accounts(usernames, (err, res) => {
-  console.log(err, res);
+scan.blockchain.accounts(usernames)
+  .on("data", (res) => {
+    console.log(res);
+}).on("error", (err){
+    console.log(err);
 });
 ```
 
