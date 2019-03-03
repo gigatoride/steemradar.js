@@ -12,7 +12,12 @@ const questions = [
     type: 'list', // Make a list for the user to choice from
     name: 'method',
     message: 'What do you want to detect?',
-    choices: ['Transfers', 'Profane', 'Last time user was active', 'Memos received'],
+    choices: [
+      'Transfers',
+      'Profane',
+      'Last time user was active',
+      'Memos received'
+    ],
     filter: val => val.toLowerCase() // Convert values to lowercase
   },
   {
@@ -108,12 +113,14 @@ inquirer.prompt(questions).then(answers => {
     answers.method // Switch statement for the user choice
   ) {
     case 'transfers': // In case of `transfers`
-      scan.blockchain.transfers(
-        answers.send ? answers.senders : null,
-        answers.amount + ' ' + answers.coin,
-        answers.receive ? answers.receivers : null,
-        !answers.isMemo ? null : answers.memo,
-        transfer => {
+      scan.blockchain
+        .transfers(
+          answers.send ? answers.senders : null,
+          answers.amount + ' ' + answers.coin,
+          answers.receive ? answers.receivers : null,
+          !answers.isMemo ? null : answers.memo
+        )
+        .on('data', transfer => {
           // Start monitoring blockchain by user inputs
           let op = transfer.operations[0][1]; // Operations object and the information about the transfer
           let {
@@ -134,13 +141,12 @@ inquirer.prompt(questions).then(answers => {
             log(
               `Transfer from  ${chalk.cyanBright(from)} to ${chalk.cyan(
                 to
-              )}  with an amount of ${chalk.yellowBright(amount)} memo: ${chalk.magentaBright(
-                memo
-              )}`
+              )}  with an amount of ${chalk.yellowBright(
+                amount
+              )} memo: ${chalk.magentaBright(memo)}`
             );
           } // Log it
-        }
-      );
+        });
       break;
     case 'profane': // In case of `profane`
       let username; // Variable for username
@@ -148,32 +154,47 @@ inquirer.prompt(questions).then(answers => {
       if (answers.blockchain === true) username = null;
       // Scan in all blockchain
       else username = answers.username; // Scan by username
-      scan.blockchain.profane(username, (_err, detected) => {
+      scan.blockchain.profane(username).on('data', detected => {
         // Start monitoring blockchain by user inputs
         let [word, author] = detected; // Convert object into local variables.
-        log(`A profane has been detected: ${chalk.red(word)} Said: ${chalk.cyanBright(author)}`);
+        log(
+          `A profane has been detected: ${chalk.red(
+            word
+          )} Said: ${chalk.cyanBright(author)}`
+        );
       });
       break;
     case 'last time user was active': // In case of transfers
-      scan.database.accounts([answers.username], (_err, res) => {
+      scan.blockchain.accounts([answers.username]).on('data', res => {
         // Start monitoring blockchain by user inputs
         log(
-          `@${chalk.cyanBright(answers.username)} last activity: ${chalk.yellowBright(
-            dateFormat(res[0].last_bandwidth_update, 'dddd, mmmm dS, yyyy, h:MM:ss TT')
+          `@${chalk.cyanBright(
+            answers.username
+          )} last activity: ${chalk.yellowBright(
+            dateFormat(
+              res[0].last_bandwidth_update,
+              'dddd, mmmm dS, yyyy, h:MM:ss TT'
+            )
           )}`
         ); // Log it
       });
       break;
     case 'memos received': // In case of `memos received`
-      scan.database.memo(answers.username, (_err, msg) => {
+      scan.blockchain.memo(answers.username).on('data', msg => {
         // Start monitoring blockchain by user inputs
         if (Array.isArray(msg)) {
           let [from, amount, memo] = msg; // Convert object into local variables.
           if (amount.includes('0.001')) {
             // Amount of transaction 0.001 sbd or detector
-            log(`${chalk.cyanBright(from)} sent you a memo: ${chalk.magentaBright(memo)}`); // Log it & dont view that tiny amount
+            log(
+              `${chalk.cyanBright(from)} sent you a memo: ${chalk.magentaBright(
+                memo
+              )}`
+            ); // Log it & dont view that tiny amount
           } else {
-            log(`${chalk.cyanBright(from)} sent you a memo: ${chalk.magentaBright(
+            log(`${chalk.cyanBright(
+              from
+            )} sent you a memo: ${chalk.magentaBright(
               memo
             )} with an amount of ${chalk.yellowBright(amount)}
             `); // Log it
