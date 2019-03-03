@@ -4,17 +4,27 @@ const defaultConfig = require('./../config.json');
 
 class Scan {
   constructor(options = {}) {
+    const modeTypes = ['default', 'transaction', 'operation'];
     this.options =
-      Object.keys(options).length === 0 && options.constructor === Object ? defaultConfig : options;
+      Object.keys(options).length === 0 && options.constructor === Object
+        ? defaultConfig
+        : options;
 
     this.node = this.options.node;
-
-    this.blockchain = new Blockchain(this);
-    this.utopian = new Utopian(this);
+    this.mode = this.options.mode;
+    if (
+      typeof this.options.mode === 'undefined' ||
+      this.mode.includes(modeTypes)
+    ) {
+      this.blockchain = new Blockchain(this);
+      this.utopian = new Utopian(this);
+    } else {
+      throw new Error(`Wrong mode type, please use ${modeTypes.join(' , ')}`);
+    }
   }
 
   /**
-   * Pause all instances
+   * Pause instance
    */
   pause() {
     this.blockchain.pause();
@@ -22,7 +32,7 @@ class Scan {
   }
 
   /**
-   * Resume all instances
+   * Resume instance
    */
   resume() {
     this.blockchain.resume();

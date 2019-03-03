@@ -16,7 +16,12 @@ module.exports = {
   sleep: ms => {
     return new Promise(resolve => setTimeout(resolve, ms));
   },
-
+  /**
+   * Calculate percentage
+   */
+  percentage: (partial, total) => {
+    return (100 * partial) / total;
+  },
   /**
    * Match profane word in broadcast content
    * @param {string} broadcast - Steem broadcast content

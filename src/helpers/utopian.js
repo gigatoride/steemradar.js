@@ -2,6 +2,7 @@
  * Module dependencies.
  */
 
+const { PassThrough } = require('stream');
 const blockchain = require('./blockchain');
 const utils = require('../utils');
 const utopian = require('node-utopian-rocks');
@@ -9,89 +10,84 @@ const config = require('../../config.json');
 
 module.exports = class Utopian extends blockchain {
   /**
-   * Pause running stream
-   */
-  pause() {
-    this.running = false;
-  }
-
-  /**
-   * Pause resume stream
-   */
-  resume() {
-    this.running = true;
-  }
-
-  /**
    * Utopian scan for recently added posts
    * @param {string} category - category name
-   * @param {function} callback - callback for err or results.
    * @param {number} ms - milliseconds
    */
-  posts(category, callback, ms = 200) {
-    if (typeof callback === 'function') {
-      this.running = true;
-      let lastPost;
-      const update = async() => {
-        if (this.running) {
+  posts(category, ms = 200) {
+    const stream = new PassThrough({ objectMode: true });
+
+    let lastPost;
+    const update = async() => {
+      if (!this.pause) {
+        try {
           this.post = await utopian.getPosts(category, 'unreviewed');
           if (Array.isArray(this.post)) {
             this.post = this.post.pop();
             if (!lastPost || lastPost !== this.post._id.$oid) {
               lastPost = this.post._id.$oid;
-              callback(null, this.post);
+              stream.write(this.post);
             }
           }
+        } catch (err) {
+          stream.emit('error', err);
         }
-        await utils.sleep(ms);
-        await update();
-      };
-      update();
-    } else throw new Error('Callback is not a function');
+      }
+      await utils.sleep(ms);
+      await update();
+    };
+    update();
+    return stream;
   }
 
   /**
    * Scanning for Utopian-io Vote
-   * @param {function} callback - a callback for votes results
    */
-  vote(callback) {
-    if (typeof callback === 'function') {
-      this.running = true;
-      const username = config.dapps[0].account;
-      this.stream
-        .on('data', async operation => {
-          if (!this.running) this.stream.pause();
-          const [txType, txData] = operation.op;
-          if (username === txData.author && txType === 'vote') callback(null, txData);
-        })
-        .on('error', callback);
-    } else throw new Error('Callback is not a function');
+  vote() {
+    const stream = new PassThrough({ objectMode: true });
+
+    const username = config.dapps[0].account;
+    this.operations
+      .on('data', async operation => {
+        if (!this.pause) this.operations.pause();
+        const [txType, txData] = operation.op;
+        if (username === txData.author && txType === 'vote') {
+          stream.write(txData);
+        }
+      })
+      .on('error', err => {
+        stream.emit('error', err);
+      });
+    return stream;
   }
 
   /**
    * Utopian scan for recently added posts
-   * @param {function} callback - callback for err, results.
    * @param {number} ms - milliseconds
    */
-  reviews(callback, ms = 200) {
-    if (typeof callback === 'function') {
-      this.running = true;
-      let lastReview;
-      const update = async() => {
-        if (this.running) {
+  reviews(ms = 200) {
+    const stream = new PassThrough({ objectMode: true });
+
+    let lastReview;
+    const update = async() => {
+      if (!this.pause) {
+        try {
           this.review = await utopian.getPosts(null, 'reviewed');
           if (Array.isArray(this.review)) {
             this.review = this.review.pop();
             if (!lastReview || lastReview !== this.review._id.$oid) {
               lastReview = this.review._id.$oid;
-              callback(null, this.review);
+              stream.write(this.review);
             }
           }
+        } catch (err) {
+          stream.emit('error', err);
         }
-        await utils.sleep(ms);
-        await update();
-      };
-      update();
-    } else throw new Error('Callback is not a function');
+      }
+      await utils.sleep(ms);
+      await update();
+    };
+    update();
+    return stream;
   }
 };
