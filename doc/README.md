@@ -69,7 +69,7 @@ Scan for profane words with author:
 
 ```js
 // Use null as username to detect all blockchain accounts
-scan.blockchain.profane(username)
+scan.blockchain.profanity(username)
 .on("data", (res) => {
     console.log(res);
 }).on("error", (err){

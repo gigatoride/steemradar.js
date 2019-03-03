@@ -154,7 +154,7 @@ inquirer.prompt(questions).then(answers => {
       if (answers.blockchain === true) username = null;
       // Scan in all blockchain
       else username = answers.username; // Scan by username
-      scan.blockchain.profane(username).on('data', detected => {
+      scan.blockchain.profanity(username).on('data', detected => {
         // Start monitoring blockchain by user inputs
         let [word, author] = detected; // Convert object into local variables.
         log(

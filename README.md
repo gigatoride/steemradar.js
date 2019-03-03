@@ -42,7 +42,7 @@ After that you should interact with the questions then you will get some results
 ### Usage Examples
 
 ```js
-scan.blockchain.profane(username).on("data", (res) => {
+scan.blockchain.profanity(username).on("data", (res) => {
     console.log(res);
 }).on("error", (err){
     console.log(err);

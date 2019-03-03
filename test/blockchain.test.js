@@ -19,7 +19,7 @@ test('Detect a transfer that has an amount greater than or equal 0.001 SBD/STEEM
 });
 
 // test('Detect public profane word', done => {
-//   scan.blockchain.profane(null).on('data', res => {
+//   scan.blockchain.profanity(null).on('data', res => {
 //     expect(Array.isArray(res)).toBeTruthy();
 //     done();
 //   });
