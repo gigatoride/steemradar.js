@@ -169,7 +169,7 @@ module.exports = class Blockchain {
    * @param {string} username - account username
    * @api public
    */
-  profane(username) {
+  profanity(username) {
     const stream = new PassThrough({ objectMode: true });
 
     // Check if username is valid
@@ -357,11 +357,11 @@ module.exports = class Blockchain {
     };
 
     const getTransfer = transactions => {
-      return transactions.reverse().find(t => {
+      return transactions.reverse().find(trx => {
         if (trxId) {
-          return t[1].op[0] === 'transfer' && t[1].trx_id === trxId;
+          return trx[1].op[0] === 'transfer' && trx[1].trx_id === trxId;
         } else {
-          return t[1].op[0] === 'transfer' && t[1].op[1].from === username;
+          return trx[1].op[0] === 'transfer' && trx[1].op[1].from === username;
         }
       });
     };
