@@ -4,7 +4,7 @@
 
 A JavaScript library for scanning Steem blockchain (beta).
 
-##### Note: this repo still in beta some commands may changed and will be updated in documentation.
+##### Note: this repo still in beta some commands may change and will be updated in the documentation.
 
 ## Usage
 
