@@ -37,8 +37,6 @@ After installing SteemRadar globally just call it from command-line/terminal:
 steemradar
 ```
 
-After that you should interact with the questions then you will get some results and dont worry it will never miss a bit because it had been heavily tested.
-
 ### Usage Examples
 
 ```js
