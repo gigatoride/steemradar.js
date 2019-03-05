@@ -4,7 +4,7 @@
 
 A JavaScript library for scanning Steem blockchain (beta).
 
-##### Note: this repo still in beta some commands may change and will be updated in the documentation.
+##### Note: this repo still in beta some commands may change and it will be updated in the documentation.
 
 ## Usage
 
@@ -78,13 +78,10 @@ for full [documentation](https://github.com/gigatoride/steemradar.js/tree/master
 All contributions are welcome by opening a [new pull request](https://github.com/gigatoride/steemradar.js/pulls), and for suggests or feature request please open a [new issue](https://github.com/gigatoride/steemradar.js/issues/new).
 
 ## Bugs
-
-Bugs is taken seriously as we consider this repository as dependency for other projects. Please open a [new issue](https://github.com/gigatoride/steemradar.js.js/issues/new) for any bug.
+Please open a [new issue](https://github.com/gigatoride/steemradar.js.js/issues/new) for any bug.
 
 ## Donations
-
-That project is going further to achieve the most complex algorithms and strategies for detecting all types of activities like tracking stolen funds and more, You can donate by sending at least 1 SBD/STEEM with memo has a wish with what you would like to see in the next versions.
+Send a memo with any suggestion that you would like to see in next version.
 
 ## License
-
 MIT
