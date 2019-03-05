@@ -1,6 +1,6 @@
 {
   "name": "steemradar",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "A JavaScript library for Steem blockchain (beta).",
   "main": "./src",
   "scripts": {
@@ -37,7 +37,7 @@
     "node-utopian-rocks": "^0.1.7"
   },
   "devDependencies": {
-    "eslint": "^5.15.0",
+    "eslint": "^5.15.1",
     "eslint-config-standard": "^12.0.0",
     "eslint-plugin-import": "^2.14.0",
     "eslint-plugin-node": "^7.0.1",
