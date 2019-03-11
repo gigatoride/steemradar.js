@@ -1,7 +1,3 @@
-/**
- * Module dependencies.
- */
-
 const axios = require('axios');
 const Profane = require('bad-words');
 

@@ -19,7 +19,7 @@
     "alerts"
   ],
   "bin": {
-    "steemradar": "./bin/tool.js"
+    "steemradar": "./bin"
   },
   "author": "gigatoride",
   "license": "MIT",
@@ -31,7 +31,6 @@
     "axios": "^0.18.0",
     "bad-words": "^1.6.3",
     "chalk": "^2.4.1",
-    "dateformat": "^3.0.3",
     "dsteem": "^0.10.1",
     "inquirer": "^6.2.0",
     "node-utopian-rocks": "^0.1.7"

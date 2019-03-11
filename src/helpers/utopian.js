@@ -1,7 +1,3 @@
-/**
- * Module dependencies.
- */
-
 const { PassThrough } = require('stream');
 const blockchain = require('./blockchain');
 const utils = require('../utils');

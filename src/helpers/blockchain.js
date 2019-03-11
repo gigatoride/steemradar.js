@@ -1,11 +1,7 @@
-/**
- * Module dependencies.
- */
-
 const { Client } = require('dsteem');
 const { PassThrough } = require('stream');
 const utils = require('../utils');
-const exchanges = require('../exchanges.json');
+const exchanges = require('../../exchanges.json');
 
 module.exports = class Blockchain {
   constructor(options) {
@@ -293,6 +289,7 @@ module.exports = class Blockchain {
    * Scan for seucrity threats or account changes.
    * @param {string} username - steem account username
    * @param {int} ms - milliseconds
+   * @api public
    */
   security(username, ms = 200) {
     const stream = new PassThrough({ objectMode: true });
@@ -344,6 +341,7 @@ module.exports = class Blockchain {
    * Tracking funds until it goes out of blockchain by 3rd party exchange
    * @param {string} username - steem account to be tracked.
    * @param {string} trxId - transaction Id for the transfer
+   * @api public
    */
   fundsTracker(username, trxId) {
     const stream = new PassThrough({ objectMode: true });
