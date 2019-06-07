@@ -2,9 +2,7 @@
 
 [![NPM version](https://img.shields.io/npm/v/steemradar.svg)](https://www.npmjs.com/package/steemradar) [![GitHub license](https://img.shields.io/github/license/gigatoride/steemradar.js.svg)](https://github.com/gigatoride/steemradar.js/blob/master/LICENSE)
 
-A JavaScript library for scanning and streaming Steem blockchain (beta).
-
-##### Note: this repo still in beta some methods may change and it will be updated in the documentation.
+A JavaScript library for scanning and streaming Steem blockchain.
 
 ## Usage
 
