@@ -1,5 +1,5 @@
 {
-  "node": "https://api.steemit.com",
+  "url": "https://api.steemit.com",
   "dapps": [
     {
       "account": "utopian-io"

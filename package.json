@@ -1,10 +1,12 @@
 {
   "name": "steemradar",
-  "version": "0.1.7",
-  "description": "A JavaScript library for Steem blockchain (beta).",
+  "version": "0.2.0-beta.1",
+  "description": "A JavaScript library for Steem blockchain.",
   "main": "./src",
   "scripts": {
-    "test": "jest --detectOpenHandles"
+    "test": "jest --detectOpenHandles",
+    "doc": "documentation build ./src/index.js -f md -o ./doc/README.md",
+    "postinstall": "node postinstall"
   },
   "repository": {
     "type": "git",
@@ -28,20 +30,23 @@
   },
   "homepage": "https://github.com/gigatoride/steemradar.js#readme",
   "dependencies": {
+    "async-iterator-to-stream": "^1.1.0",
     "axios": "^0.18.0",
     "bad-words": "^1.6.3",
     "chalk": "^2.4.1",
-    "dsteem": "^0.10.1",
     "inquirer": "^6.2.0",
-    "node-utopian-rocks": "^0.1.7"
+    "node-utopian-rocks": "^0.1.7",
+    "steem": "^0.7.5"
   },
   "devDependencies": {
-    "eslint": "^5.15.1",
+    "documentation": "^11.0.0",
+    "eslint": "^5.16.0",
     "eslint-config-standard": "^12.0.0",
     "eslint-plugin-import": "^2.14.0",
     "eslint-plugin-node": "^7.0.1",
     "eslint-plugin-promise": "^4.0.1",
     "eslint-plugin-standard": "^4.0.0",
-    "jest": "^23.6.0"
+    "jest": "^24.8.0",
+    "jsdoc": "^3.5.5"
   }
 }
