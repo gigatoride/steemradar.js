@@ -10,7 +10,7 @@ const questions = [
     type: 'list',
     name: 'method',
     message: 'What do you want to detect?',
-    choices: ['Transfers', 'Profane', 'Last time user was active', 'Memos received'],
+    choices: ['Transfers', 'Profane', 'Last time user was active'],
     filter: val => val.toLowerCase()
   },
   {
@@ -21,12 +21,10 @@ const questions = [
   },
   {
     type: 'input',
-    name: 'username',
-    message: 'What is your username?',
+    name: 'accountName',
+    message: 'What is your accountName?',
     when: answers =>
-      (!answers.blockchain && answers.method === 'profane') ||
-      answers.method === 'last time user was active' ||
-      answers.method === 'memos received',
+      (!answers.blockchain && answers.method === 'profane') || answers.method === 'last time user was active',
     validate: name => /[\w---.]{3,}/.test(name)
   },
   {
@@ -39,10 +37,10 @@ const questions = [
   {
     type: 'input',
     name: 'senders',
-    message: 'Please enter senders usernames (user1,user2):',
+    message: 'Please enter senders accountNames (user1,user2):',
     when: answers => answers.send,
     validate: names => /[\w--,-.]{3,}/.test(names),
-    filter: usernames => usernames.split(',')
+    filter: accountNames => accountNames.split(',')
   },
   {
     type: 'confirm',
@@ -57,7 +55,7 @@ const questions = [
     message: 'Please enter receivers (user1,user2)',
     when: answers => answers.receive,
     validate: names => /[\w--,-.]{3,}/.test(names),
-    filter: usernames => usernames.split(',')
+    filter: accountNames => accountNames.split(',')
   },
   {
     type: 'list',
@@ -66,6 +64,7 @@ const questions = [
     choices: ['SBD', 'STEEM', 'Both'],
     filter: coin => {
       if (coin === 'Both') return 'SBD|STEEM';
+      else return coin;
     },
     when: answers => answers.method === 'transfers'
   },
@@ -100,63 +99,50 @@ inquirer.prompt(questions).then(answers => {
   JSON.stringify(answers, null, '  ');
   switch (answers.method) {
     case 'transfers':
+      console.log(answers.amount + ' ' + answers.coin);
       scan.blockchain
         .transfers(
           answers.send ? answers.senders : null,
-          answers.amount + ' ' + answers.coin,
           answers.receive ? answers.receivers : null,
-          !answers.isMemo ? null : answers.memo
+          !answers.isMemo ? null : answers.memo,
+          { minAmount: answers.amount + ' ' + answers.coin }
         )
         .on('data', transfer => {
           let op = transfer.operations[0][1];
           let { from, to, amount, memo } = op;
-          if (memo === '') {
-            log(`Transfer from
-                ${chalk.cyanBright(from)}
-                to 
-                ${chalk.cyan(to)}
-                with an amount of 
-                ${chalk.yellowBright(amount)}`);
-          } else {
+          if (memo === '')
+            log(
+              `Transfer from ${chalk.cyanBright(from)} to ${chalk.cyan(to)} with an amount of ${chalk.yellowBright(
+                amount
+              )}`
+            );
+          else
             log(
               `Transfer from  ${chalk.cyanBright(from)} to ${chalk.cyan(to)}  with an amount of ${chalk.yellowBright(
                 amount
               )} memo: ${chalk.magentaBright(memo)}`
             );
-          }
         });
       break;
+
     case 'profane':
-      let username;
-      if (answers.blockchain === true) username = null;
-      else username = answers.username;
-      scan.blockchain.profanity(username).on('data', detected => {
-        let [word, author] = detected;
+      let accountName;
+      if (answers.blockchain === true) accountName = null;
+      else accountName = answers.accountName;
+      scan.blockchain.profanity(accountName).on('data', data => {
+        let [word, author] = data;
         log(`A profane has been detected: ${chalk.red(word)} Said: ${chalk.cyanBright(author)}`);
       });
       break;
+
     case 'last time user was active':
-      scan.blockchain.accounts([answers.username]).on('data', res => {
+      scan.blockchain.accountActivity([answers.accountName]).on('data', res => {
         log(
-          `@${chalk.cyanBright(answers.username)} last activity: ${chalk.yellowBright(res[0].last_bandwidth_update)}`
+          `@${chalk.cyanBright(answers.accountName)} last activity: ${chalk.yellowBright(res[0].last_bandwidth_update)}`
         );
       });
       break;
-    case 'memos received':
-      scan.blockchain.memo(answers.username).on('data', msg => {
-        if (Array.isArray(msg)) {
-          let [from, amount, memo] = msg;
-          if (amount.includes('0.001')) {
-            log(`${chalk.cyanBright(from)} sent you a memo: ${chalk.magentaBright(memo)}`);
-          } else {
-            log(`${chalk.cyanBright(from)} sent you a memo: ${chalk.magentaBright(
-              memo
-            )} with an amount of ${chalk.yellowBright(amount)}
-            `);
-          }
-        }
-      });
-      break;
+
     default:
       log('You did not make any right choice');
       process.stdin.resume();
