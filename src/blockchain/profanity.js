@@ -6,10 +6,9 @@ const { isProfane } = require('../utils');
 
 /**
  * Scan blockchain comments/posts/replies that includes profane
- * @param {String} account - scanned account account
+ * @param {String} account - steem account names
  * @returns {Stream.<Object>} - transaction
  * @memberof Scan.blockchain
- * @access private
  */
 function profanity(account) {
   if (account && !validateAccountName(account)) throw new Error('account is not valid or exist.');

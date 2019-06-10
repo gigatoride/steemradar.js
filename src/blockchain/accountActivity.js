@@ -5,7 +5,7 @@ const { sleep } = require('../utils');
 
 /**
  * Scan account database recent activity
- * @param {Array} accounts - steem accounts
+ * @param {Array} accounts - steem account names
  * @returns {Stream.<Object>} - transaction
  * @memberof Scan.blockchain
  */

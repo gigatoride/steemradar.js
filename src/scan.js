@@ -3,14 +3,11 @@ const steem = require('steem');
 
 /**
  * @class
+ * @desc Creates a scan instance
+ * @param {object} options
+ * @param {String} options.url RPC Node URL
  */
 class Scan {
-  /**
-   * @constructor
-   * @desc Creates a scan instance
-   * @param {object} options
-   * @param {String} options.url node url
-   */
   constructor(options = {}) {
     this.options = Object.keys(options).length === 0 && options.constructor === Object ? defaultConfig : options;
     this.url = this.options.url;

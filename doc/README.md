@@ -16,20 +16,25 @@
         -   [feedPublish][12]
         -   [fundsTracker][13]
             -   [Parameters][14]
-        -   [transfers][15]
+        -   [profanity][15]
             -   [Parameters][16]
-        -   [votes][17]
+        -   [transfers][17]
             -   [Parameters][18]
-    -   [utopian][19]
-        -   [reviews][20]
-        -   [posts][21]
-            -   [Parameters][22]
+        -   [votes][19]
+            -   [Parameters][20]
+    -   [utopian][21]
+        -   [reviews][22]
+        -   [posts][23]
+            -   [Parameters][24]
 
 ## Scan
 
+Creates a scan instance
+
 ### Parameters
 
--   `options` **[object][23]**  (optional, default `{}`)
+-   `options` **[object][25]**  (optional, default `{}`)
+    -   `options.url` **[String][26]** RPC Node URL
 
 ### blockchain
 
@@ -39,15 +44,15 @@ Scan account database recent activity
 
 ##### Parameters
 
--   `accounts` **[Array][24]** steem accounts
+-   `accounts` **[Array][27]** steem account names
 
-Returns **[Stream][25]&lt;[Object][23]>** transaction
+Returns **[Stream][28]&lt;[Object][25]>** transaction
 
 #### accountCounter
 
 Stream account counter
 
-Returns **[Stream][25]&lt;[Number][26]>** account number
+Returns **[Stream][28]&lt;Int>** account number
 
 #### accountMentions
 
@@ -55,9 +60,9 @@ Scan for mentions
 
 ##### Parameters
 
--   `accounts`  
+-   `accounts` **[Array][27]** steem account names
 
-Returns **[Stream][25]&lt;[Object][23]>** transaction
+Returns **[Stream][28]&lt;[Object][25]>** transaction
 
 #### accountSecurity
 
@@ -65,21 +70,21 @@ Scan for security threats or account changes/transfers
 
 ##### Parameters
 
--   `accounts`  
+-   `accounts` **[Array][27]** steem account names
 
-Returns **[Stream][25]&lt;[Object][23]>** transaction
+Returns **[Stream][28]&lt;[Object][25]>** transaction
 
 #### blacklist
 
 Scan for any blacklisted user on blockchain latest blocks.
 
-Returns **[Stream][25]&lt;[Object][23]>** transaction
+Returns **[Stream][28]&lt;[Object][25]>** transaction
 
 #### feedPublish
 
 Stream price feed
 
-Returns **[Stream][25]&lt;[Object][23]>** transaction
+Returns **[Stream][28]&lt;[Object][25]>** transaction
 
 #### fundsTracker
 
@@ -87,12 +92,22 @@ Tracking funds until it goes out of blockchain by 3rd party exchange
 
 ##### Parameters
 
--   `username` **[String][27]** steem account to be tracked.
--   `trxId` **[String][27]** transaction Id for the transfer
--   `opts` **[Object][23]** options (optional, default `{}`)
-    -   `opts.multi` **[Boolean][28]** multi tracking
+-   `username` **[String][26]** steem account to be tracked.
+-   `trxId` **[String][26]** transaction Id for the transfer
+-   `opts` **[Object][25]** options (optional, default `{}`)
+    -   `opts.multi` **[Boolean][29]** multi tracking
 
-Returns **[Stream][25]&lt;[Object][23]>** transaction
+Returns **[Stream][28]&lt;[Object][25]>** transaction
+
+#### profanity
+
+Scan blockchain comments/posts/replies that includes profane
+
+##### Parameters
+
+-   `account` **[String][26]** steem account names
+
+Returns **[Stream][28]&lt;[Object][25]>** transaction
 
 #### transfers
 
@@ -100,14 +115,13 @@ Scan blockchain transfers
 
 ##### Parameters
 
--   `senders` **[Array][24]** accounts names for senders
--   `receivers` **[Array][24]** account names for receivers
--   `targetMemo` **[String][27]** search by memo
--   `opts` **[Object][23]** options (optional, default `{}`)
-    -   `opts.minAmount` **[Number][26]** transfers minimum amount
--   `minAmount` **[String][27]** minimum SBD/STEEM amount
+-   `senders` **[Array][27]** steem account names for senders
+-   `receivers` **[Array][27]** steem account names for receivers
+-   `targetMemo` **[String][26]** search by memo
+-   `opts` **[Object][25]** options (optional, default `{}`)
+    -   `opts.minAmount` **[Number][30]** transfers minimum amount
 
-Returns **[Stream][25]&lt;[Object][23]>** transaction
+Returns **[Stream][28]&lt;[Object][25]>** transaction
 
 #### votes
 
@@ -115,10 +129,10 @@ Get accounts votes or entire blockchain
 
 ##### Parameters
 
--   `accounts` **[Array][24]** scanning accounts votes
--   `targetWeight` **[Number][26]** the minimum vote weight
+-   `accounts` **[Array][27]** scanning accounts votes
+-   `targetWeight` **[Number][30]** the minimum vote weight
 
-Returns **[Stream][25]&lt;[Object][23]>** transaction
+Returns **[Stream][28]&lt;[Object][25]>** transaction
 
 ### utopian
 
@@ -126,7 +140,7 @@ Returns **[Stream][25]&lt;[Object][23]>** transaction
 
 Utopian scan for recently added posts
 
-Returns **[Stream][25]&lt;[object][23]>** 
+Returns **[Stream][28]&lt;[object][25]>** 
 
 #### posts
 
@@ -134,9 +148,9 @@ Utopian scan for recently added posts
 
 ##### Parameters
 
--   `category` **[String][27]** category name
+-   `category` **[String][26]** category name
 
-Returns **[Stream][25]&lt;[object][23]>** 
+Returns **[Stream][28]&lt;[object][25]>** 
 
 [1]: #scan
 
@@ -166,30 +180,34 @@ Returns **[Stream][25]&lt;[object][23]>**
 
 [14]: #parameters-4
 
-[15]: #transfers
+[15]: #profanity
 
 [16]: #parameters-5
 
-[17]: #votes
+[17]: #transfers
 
 [18]: #parameters-6
 
-[19]: #utopian
+[19]: #votes
 
-[20]: #reviews
+[20]: #parameters-7
 
-[21]: #posts
+[21]: #utopian
 
-[22]: #parameters-7
+[22]: #reviews
 
-[23]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
+[23]: #posts
 
-[24]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
+[24]: #parameters-8
 
-[25]: https://nodejs.org/api/stream.html
+[25]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
 
-[26]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number
+[26]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
 
-[27]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
+[27]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
 
-[28]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean
+[28]: https://nodejs.org/api/stream.html
+
+[29]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean
+
+[30]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number

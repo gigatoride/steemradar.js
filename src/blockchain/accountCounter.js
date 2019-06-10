@@ -4,7 +4,7 @@ const { sleep } = require('../utils');
 
 /**
  * Stream account counter
- * @returns {Stream.<Number>} - account number
+ * @returns {Stream.<Int>} - account number
  * @memberof Scan.blockchain
  */
 function accountCounter() {

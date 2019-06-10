@@ -5,6 +5,7 @@ const { sleep } = require('../utils');
 
 /**
  * Scan for security threats or account changes/transfers
+ * @param {Array} accounts - steem account names
  * @returns {Stream.<Object>} - transaction
  * @access public
  * @memberof Scan.blockchain

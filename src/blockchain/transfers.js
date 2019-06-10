@@ -5,9 +5,8 @@ const { sleep } = require('./../utils');
 
 /**
  * Scan blockchain transfers
- * @param {Array} senders - accounts names for senders
- * @param {String} minAmount - minimum SBD/STEEM amount
- * @param {Array} receivers - account names for receivers
+ * @param {Array} senders - steem account names for senders
+ * @param {Array} receivers - steem account names for receivers
  * @param {String} targetMemo - search by memo
  * @param {Object} opts - options
  * @param {Number} opts.minAmount - transfers minimum amount
