@@ -20,9 +20,6 @@
     "monitor",
     "alerts"
   ],
-  "bin": {
-    "steemradar": "./bin"
-  },
   "author": "gigatoride",
   "license": "MIT",
   "bugs": {
@@ -30,16 +27,11 @@
   },
   "homepage": "https://github.com/gigatoride/steemradar.js#readme",
   "dependencies": {
-    "async-iterator-to-stream": "^1.1.0",
-    "axios": "^0.18.0",
-    "bad-words": "^1.6.3",
-    "chalk": "^2.4.1",
-    "inquirer": "^6.2.0",
-    "node-utopian-rocks": "^0.1.7",
+    "profanities": "^2.11.0",
     "steem": "^0.7.5"
   },
   "devDependencies": {
-    "documentation": "^11.0.0",
+    "documentation": "^11.0.1",
     "eslint": "^5.16.0",
     "eslint-config-standard": "^12.0.0",
     "eslint-plugin-import": "^2.14.0",

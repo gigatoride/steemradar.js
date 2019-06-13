@@ -1,14 +1,12 @@
-const iteratorStream = require('async-iterator-to-stream');
-const blockchain = require('./../helper');
-const { sleep } = require('./../utils');
-const { isBlacklisted } = require('../utils');
+const blockchain = require('../helper');
+const { isBlacklisted, readableStream, sleep } = require('../utils');
 
 /**
  * Scan for any blacklisted user on blockchain latest blocks.
  * @returns {Stream.<Object>} - transaction
  * @memberof Scan.blockchain
  */
-function blacklist() {
+function getBlacklisted() {
   const iterator = async function * (ms = 700) {
     let latestCatch;
     while (true) {
@@ -28,6 +26,7 @@ function blacklist() {
             break;
         }
         if (account && trx.transaction_id !== latestCatch) {
+          latestCatch = trx.transaction_id;
           const res = await isBlacklisted(account);
           if (res.blacklisted.length) yield trx;
         }
@@ -36,7 +35,7 @@ function blacklist() {
     }
   };
 
-  return iteratorStream.obj(iterator());
+  return readableStream(iterator());
 }
 
-module.exports = blacklist;
+module.exports = getBlacklisted;

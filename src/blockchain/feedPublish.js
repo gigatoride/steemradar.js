@@ -1,20 +1,20 @@
-const iteratorStream = require('async-iterator-to-stream');
-const blockchain = require('../helper');
-const { sleep } = require('../utils');
+const api = require('../helper');
+const { sleep, readableStream } = require('../utils');
 
 /**
  * Stream price feed
  * @returns {Stream.<Object>} - transaction
  * @memberof Scan.blockchain
  */
-function feedPublish() {
+function getFeedPublish() {
   let latestCatch;
   const iterator = async function * (ms = 700) {
     while (true) {
-      const transactions = await blockchain.getTransactions();
+      const transactions = await api.getTransactions();
       for (const trx of transactions) {
         const [txType] = trx.operations[0];
-        if (txType === 'feed_publish' && trx.transaction_id !== latestCatch) {
+        const isUnique = trx.transaction_id !== latestCatch;
+        if (isUnique & (txType === 'feed_publish')) {
           latestCatch = trx.transaction_id;
           yield trx;
         }
@@ -23,7 +23,7 @@ function feedPublish() {
     }
   };
 
-  return iteratorStream.obj(iterator());
+  return readableStream(iterator());
 }
 
-module.exports = feedPublish;
+module.exports = getFeedPublish;

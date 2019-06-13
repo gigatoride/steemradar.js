@@ -1,23 +1,27 @@
-const accountActivity = require('./accountActivity');
-const accountCounter = require('./accountCounter');
-const accountMentions = require('./accountMentions');
-const accountSecurity = require('./accountSecurity');
-const blacklist = require('./blacklist');
-const feedPublish = require('./feedPublish');
-const fundsTracker = require('./fundsTracker');
-const profanity = require('./profanity');
-const transfers = require('./transfers');
-const votes = require('./votes');
+const getAccountActivity = require('./accountActivity');
+const getAccountCounter = require('./accountCounter');
+const getAccountMentions = require('./accountMentions');
+const getAccountSecurity = require('./accountSecurity');
+const getBlacklisted = require('./blacklisted');
+const getComments = require('./comments');
+const getFeedPublish = require('./feedPublish');
+const getFundsTracker = require('./fundsTracker');
+const getPosts = require('./posts');
+const getProfanity = require('./profanity');
+const getTransfers = require('./transfers');
+const getVotes = require('./votes');
 
 module.exports = {
-  accountActivity,
-  accountCounter,
-  accountMentions,
-  accountSecurity,
-  blacklist,
-  feedPublish,
-  fundsTracker,
-  profanity,
-  transfers,
-  votes
+  getAccountActivity,
+  getAccountCounter,
+  getAccountMentions,
+  getAccountSecurity,
+  getBlacklisted,
+  getComments,
+  getFeedPublish,
+  getFundsTracker,
+  getPosts,
+  getProfanity,
+  getTransfers,
+  getVotes
 };

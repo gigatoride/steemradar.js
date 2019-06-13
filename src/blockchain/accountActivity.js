@@ -1,23 +1,20 @@
-const iteratorStream = require('async-iterator-to-stream');
 const steem = require('steem');
-const { validateAccountName } = require('steem').utils;
-const { sleep } = require('../utils');
+const { sleep, isValidAccountNames, readableStream } = require('../utils');
 
 /**
  * Scan account database recent activity
- * @param {Array} accounts - steem account names
+ * @param {?Array=} names - steem account names
  * @returns {Stream.<Object>} - transaction
  * @memberof Scan.blockchain
  */
-function accountActivity(accounts) {
-  if (accounts && !accounts.every(account => validateAccountName(account) === null))
-    throw new Error('accounts are not valid.');
+function getAccountActivity(names) {
+  if (names && isValidAccountNames(names)) throw new Error('An account name is not valid.');
 
   let latestCatch = [];
 
   const iterator = async function * (ms = 4 * 1000) {
     while (true) {
-      const history = await steem.api.getAccountsAsync(accounts);
+      const history = await steem.api.getAccountAsync(names);
       const changes = history.every((account, i) => {
         return !Object.is(account, latestCatch[i]);
       });
@@ -29,7 +26,7 @@ function accountActivity(accounts) {
     }
   };
 
-  return iteratorStream.obj(iterator());
+  return readableStream(iterator());
 }
 
-module.exports = accountActivity;
+module.exports = getAccountActivity;

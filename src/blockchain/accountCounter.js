@@ -1,13 +1,12 @@
-const iteratorStream = require('async-iterator-to-stream');
 const api = require('../helper');
-const { sleep } = require('../utils');
+const { sleep, readableStream } = require('../utils');
 
 /**
  * Stream account counter
  * @returns {Stream.<Int>} - account number
  * @memberof Scan.blockchain
  */
-function accountCounter() {
+function getAccountCounter() {
   let latestCatch;
   const iterator = async function * (ms = 700) {
     while (true) {
@@ -21,7 +20,7 @@ function accountCounter() {
     }
   };
 
-  return iteratorStream.obj(iterator());
+  return readableStream(iterator());
 }
 
-module.exports = accountCounter;
+module.exports = getAccountCounter;

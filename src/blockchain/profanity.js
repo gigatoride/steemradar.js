@@ -1,17 +1,14 @@
-const iteratorStream = require('async-iterator-to-stream');
 const { validateAccountName } = require('steem').utils;
 const blockchain = require('./../helper');
-const { sleep } = require('./../utils');
-const { isProfane } = require('../utils');
-
+const { sleep, isProfane, readableStream } = require('./../utils');
 /**
  * Scan blockchain comments/posts/replies that includes profane
- * @param {String} account - steem account names
+ * @param {?String=} name - steem account names
  * @returns {Stream.<Object>} - transaction
  * @memberof Scan.blockchain
  */
-function profanity(account) {
-  if (account && !validateAccountName(account)) throw new Error('account is not valid or exist.');
+function getProfanity(name) {
+  if (name && !validateAccountName(name)) throw new Error('Account name is not valid or exist.');
 
   const iterator = async function * (ms = 700) {
     let latestCatch;
@@ -19,26 +16,34 @@ function profanity(account) {
       const transactions = await blockchain.getTransactions();
       for (const trx of transactions) {
         const [txType, txData] = trx.operations[0];
-        switch (txType) {
-          case 'comment':
-            if (!account || txData.author === account) {
-              const word = isProfane(txData.body);
-              if (typeof word === 'string' && trx.transaction_id !== latestCatch) yield trx;
-            }
-            break;
-          case 'transfer':
-            if (!account || txData.from === account) {
-              const word = isProfane(txData.memo);
-              if (typeof word === 'string' && trx.transaction_id !== latestCatch) yield trx;
-            }
-            break;
-        }
+        const isUnique = trx.transaction_id !== latestCatch;
+        if (isUnique)
+          switch (txType) {
+            case 'comment':
+              if (!name || txData.author === name) {
+                const word = isProfane(txData.body);
+                if (typeof word === 'string') {
+                  latestCatch = trx.transaction_id;
+                  yield trx;
+                }
+              }
+              break;
+            case 'transfer':
+              if (!name || txData.from === name) {
+                const word = isProfane(txData.memo);
+                if (typeof word === 'string') {
+                  latestCatch = trx.transaction_id;
+                  yield trx;
+                }
+              }
+              break;
+          }
       }
       await sleep(ms);
     }
   };
 
-  return iteratorStream.obj(iterator());
+  return readableStream(iterator());
 }
 
-module.exports = profanity;
+module.exports = getProfanity;

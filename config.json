@@ -1,8 +1,18 @@
 {
   "url": "https://api.steemit.com",
-  "dapps": [
-    {
-      "account": "utopian-io"
-    }
+  "global_blacklist_api": "blacklist.usesteem.com",
+  "exchanges": [
+    "blocktrades",
+    "deepcrypto8",
+    "huobi-pro",
+    "bittrex",
+    "bithumb.live",
+    "openledger-dex",
+    "changelly",
+    "onepagex",
+    "poloniex",
+    "shapeshiftio",
+    "hitbtc-exchange",
+    "upbituserwallet"
   ]
 }
