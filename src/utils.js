@@ -43,18 +43,35 @@ module.exports = {
    */
   isBlacklisted: name => {
     return new Promise((resolve, reject) => {
-      http.get(
-        {
-          hostname: config.global_blacklist_api,
-          port: 80,
-          path: `/user/${name}`,
-          agent: false // create a new agent just for this one request
-        },
-        res => {
+      http
+        .get(`${config.global_blacklist_api_url}/user/${name}`, res => {
+          const { statusCode } = res;
+          const contentType = res.headers['content-type'];
+
+          let error;
+          if (statusCode !== 200) error = new Error('Request Failed.\n' + `Status Code: ${statusCode}`);
+          else if (!/^application\/json/.test(contentType))
+            error = new Error('Invalid content-type.\n' + `Expected application/json but received ${contentType}`);
+          if (error) {
+            console.error(error.message);
+            // Consume response data to free up memory
+            res.resume();
+            return;
+          }
+
+          res.setEncoding('utf8');
+          let rawData = '';
           res.on('data', resolve);
-          res.on('error', reject);
-        }
-      );
+          res.on('end', () => {
+            try {
+              const parsedData = JSON.parse(rawData);
+              resolve(parsedData);
+            } catch (e) {
+              reject(e.message);
+            }
+          });
+        })
+        .on('error', reject);
     });
   },
   /**
