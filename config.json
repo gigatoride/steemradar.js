@@ -1,6 +1,6 @@
 {
-  "url": "https://api.steemit.com",
-  "global_blacklist_api": "blacklist.usesteem.com",
+  "node_url": "https://api.steemit.com",
+  "global_blacklist_api_url": "http://blacklist.usesteem.com",
   "exchanges": [
     "blocktrades",
     "deepcrypto8",
@@ -14,5 +14,19 @@
     "shapeshiftio",
     "hitbtc-exchange",
     "upbituserwallet"
+  ],
+  "utopian_tags": [
+    "development",
+    "copywriting",
+    "graphics",
+    "analysis",
+    "social",
+    "documentation",
+    "blog",
+    "bug-hunting",
+    "ideas",
+    "video-tutorials",
+    "tutorials",
+    "anti-abuse"
   ]
 }
