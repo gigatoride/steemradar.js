@@ -10,8 +10,8 @@ const steem = require('steem');
 class Scan {
   constructor(options = {}) {
     this.options = Object.keys(options).length === 0 && options.constructor === Object ? defaultConfig : options;
-    this.url = this.options.url;
-    steem.api.setOptions({ url: this.url });
+    this.nodeURL = this.options.node_url;
+    steem.api.setOptions({ url: this.nodeURL });
   }
 }
 
