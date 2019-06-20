@@ -7,6 +7,7 @@ const config = require('../../config.json');
  * @param {?String} trxId - transaction Id for the transfer
  * @param {?Object} opts - options
  * @param {Boolean} opts.multi - multi tracking
+ * @param {Array} opts.exchanges - targeted steem exchanges
  * @returns {Stream.<Object>} - transaction
  * @memberof Scan.blockchain
  */
