@@ -1,6 +1,9 @@
 # SteemRadar.js
 
 [![NPM version](https://img.shields.io/npm/v/steemradar.svg)](https://www.npmjs.com/package/steemradar) [![GitHub license](https://img.shields.io/github/license/gigatoride/steemradar.js.svg)](https://github.com/gigatoride/steemradar.js/blob/master/LICENSE)
+[![GitHub Issues](https://img.shields.io/github/issues/gigatoride/steemradar.js.svg)](https://github.com/gigatoride/steemradar.js/issues)
+![Downloads](https://img.shields.io/npm/dt/steemradar.svg)
+![Powered by utopian.io](https://img.shields.io/badge/powered%20by-utopian.io-ff69b4.svg)
 
 A JavaScript library for scanning and streaming Steem blockchain.
 
@@ -8,42 +11,28 @@ A JavaScript library for scanning and streaming Steem blockchain.
 
 ### Installation
 
-Command-line usage (install it globally):
-
-```
-npm install steemradar -g
-```
-
-For the module:
-
+Using npm:
 ```
 npm install steemradar
-```
-
-Then
-
-```js
-const SteemRadar = require("steemradar"),
-  scan = new SteemRadar.Scan({ url: "https://api.steemit.com" });
-```
-
-### Command-line usage
-
-After installing SteemRadar globally just call it from command-line/terminal:
-
-```
-steemradar
 ```
 
 ## API
 
 ### Usage example
 
+Create a new scan instance
+```js
+const SteemRadar = require("steemradar"),
+  scan = new SteemRadar.Scan({ url: "https://api.steemit.com" });
+```
+
+Create a new stream
+
 ```js
 const stream = scan.blockchain.accountCounter();
 stream
-  .on("data", trx => {
-    console.log(trx);
+  .on("data", count => {
+    console.log(count);
   })
   .on("error", err => {
     console.log(err);
