@@ -41,22 +41,54 @@ steemradar
 
 ```js
 const stream = scan.blockchain.accountCounter();
-stream.on("data", console.log).on("error", console.log);
+stream
+  .on("data", trx => {
+    console.log(trx);
+  })
+  .on("error", err => {
+    console.log(err);
+  });
 ```
+
+### Scan Blockchain Aliases
+
+``scan.blockchain.getAccountActivity()``
+
+``scan.blockchain.getAccountCounter()``
+
+``scan.blockchain.getAccountMentions()``
+
+``scan.blockchain.getAccountSecurity()``
+
+``scan.blockchain.getBlacklisted()``
+
+``scan.blockchain.getComments()``
+
+``scan.blockchain.getFeedPublish()``
+
+``scan.blockchain.getFundsTracker()``
+
+``scan.blockchain.getPosts()``
+
+``scan.blockchain.getProfanity()``
+
+``scan.blockchain.getTransfers()``
+
+``scan.blockchain.getVotes()``
+
+### Scan Utopian Aliases
+
+``scan.utopian.getPosts()``
 
 for full [documentation](https://github.com/gigatoride/steemradar.js/tree/master/doc)
 
 ## Contribute
 
-All contributions are welcome by opening a [new pull request](https://github.com/gigatoride/steemradar.js/pulls), and for suggests or feature request please open a [new issue](https://github.com/gigatoride/steemradar.js/issues/new).
+All contributions are welcome by opening a [new pull request](https://github.com/gigatoride/steemradar.js/pulls), And for suggests or feature request please open a [new issue](https://github.com/gigatoride/steemradar.js/issues/new).
 
 ## Bugs
 
 Please open a [new issue](https://github.com/gigatoride/steemradar.js.js/issues/new) for any bug.
-
-## Donations
-
-Send a memo with any suggestion that you would like to see in next version.
 
 ## License
 
