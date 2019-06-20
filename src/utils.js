@@ -27,11 +27,11 @@ module.exports = {
     return arr.reduce((p, c) => p + c, 0) / arr.length;
   },
   /**
-   * Match profane word in broadcast content
+   * Check for profane words in body
    * @param {String} broadcast - Steem broadcast content
    */
   isProfane: body => {
-    return body.split(/\s/gm).every(word => {
+    return !body || body.split(/\s/gm).some(word => {
       return profanities.includes(word);
     });
   },
@@ -61,7 +61,9 @@ module.exports = {
 
           res.setEncoding('utf8');
           let rawData = '';
-          res.on('data', resolve);
+          res.on('data', chunk => {
+            rawData += chunk;
+          });
           res.on('end', () => {
             try {
               const parsedData = JSON.parse(rawData);

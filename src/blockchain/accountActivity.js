@@ -14,7 +14,7 @@ function getAccountActivity(names) {
 
   const iterator = async function * (ms = 4 * 1000) {
     while (true) {
-      const history = await steem.api.getAccountAsync(names);
+      const history = await steem.api.getAccountsAsync(names);
       const changes = history.every((account, i) => {
         return !Object.is(account, latestCatch[i]);
       });

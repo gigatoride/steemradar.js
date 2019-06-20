@@ -20,22 +20,18 @@ function getProfanity(name) {
         if (isUnique)
           switch (txType) {
             case 'comment':
-              if (!name || txData.author === name) {
-                const word = isProfane(txData.body);
-                if (typeof word === 'string') {
+              if (!name || txData.author === name)
+                if (isProfane(txData.body)) {
                   latestCatch = trx.transaction_id;
                   yield trx;
                 }
-              }
               break;
             case 'transfer':
-              if (!name || txData.from === name) {
-                const word = isProfane(txData.memo);
-                if (typeof word === 'string') {
+              if (!name || txData.from === name)
+                if (isProfane(txData.memo)) {
                   latestCatch = trx.transaction_id;
                   yield trx;
                 }
-              }
               break;
           }
       }

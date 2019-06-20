@@ -12,6 +12,7 @@ A JavaScript library for scanning and streaming Steem blockchain.
 ### Installation
 
 Using npm:
+
 ```
 npm install steemradar
 ```
@@ -21,6 +22,7 @@ npm install steemradar
 ### Usage example
 
 Create a new scan instance
+
 ```js
 const SteemRadar = require("steemradar"),
   scan = new SteemRadar.Scan({ url: "https://api.steemit.com" });
@@ -41,33 +43,33 @@ stream
 
 ### Scan Blockchain Aliases
 
-``scan.blockchain.getAccountActivity()``
+`scan.blockchain.getAccountActivity()`
 
-``scan.blockchain.getAccountCounter()``
+`scan.blockchain.getAccountCounter()`
 
-``scan.blockchain.getAccountMentions()``
+`scan.blockchain.getAccountMentions()`
 
-``scan.blockchain.getAccountSecurity()``
+`scan.blockchain.getAccountSecurity()`
 
-``scan.blockchain.getBlacklisted()``
+`scan.blockchain.getBlacklisted()`
 
-``scan.blockchain.getComments()``
+`scan.blockchain.getComments()`
 
-``scan.blockchain.getFeedPublish()``
+`scan.blockchain.getFeedPublish()`
 
-``scan.blockchain.getFundsTracker()``
+`scan.blockchain.getFundsTracker()`
 
-``scan.blockchain.getPosts()``
+`scan.blockchain.getPosts()`
 
-``scan.blockchain.getProfanity()``
+`scan.blockchain.getProfanity()`
 
-``scan.blockchain.getTransfers()``
+`scan.blockchain.getTransfers()`
 
-``scan.blockchain.getVotes()``
+`scan.blockchain.getVotes()`
 
 ### Scan Utopian Aliases
 
-``scan.utopian.getPosts()``
+`scan.utopian.getPosts()`
 
 for full [documentation](https://github.com/gigatoride/steemradar.js/tree/master/doc)
 

@@ -7,7 +7,7 @@ const { isBlacklisted, readableStream, sleep } = require('../utils');
  * @memberof Scan.blockchain
  */
 function getBlacklisted() {
-  const iterator = async function * (ms = 700) {
+  const iterator = async function * (ms = 800) {
     let latestCatch;
     while (true) {
       const transactions = await blockchain.getTransactions();
@@ -28,7 +28,7 @@ function getBlacklisted() {
         if (account && trx.transaction_id !== latestCatch) {
           latestCatch = trx.transaction_id;
           const res = await isBlacklisted(account);
-          if (res.blacklisted.length) yield trx;
+          if (res.blacklisted && res.blacklisted.length) yield trx;
         }
       }
       await sleep(ms);

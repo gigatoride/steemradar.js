@@ -18,16 +18,18 @@ function getAccountMentions(accounts) {
         const [txType, txData] = trx.operations[0];
         const isContent = txType === 'comment';
         const isUnique = trx.transaction_id !== latestCatch;
-        const mentionAccounts = txData.body.match(/\B@[a-z0-9-.]+/gm);
-        const mentionTargets = accounts
-          ? accounts.map(name => {
-            return `@${name}`;
-          })
-          : [];
-        const setMentions = accounts ? mentionAccounts.some(name => mentionTargets.includes(name)) : true;
-        if (isUnique && isContent && mentionAccounts && setMentions) {
-          latestCatch = trx.transaction_id;
-          yield trx;
+        if (isUnique && isContent) {
+          const mentionAccounts = txData.body.match(/\B@[a-z0-9-.]+/gm);
+          const mentionTargets = accounts
+            ? accounts.map(name => {
+              return `@${name}`;
+            })
+            : [];
+          const setMentions = accounts ? mentionAccounts.some(name => mentionTargets.includes(name)) : true;
+          if (mentionAccounts && setMentions) {
+            latestCatch = trx.transaction_id;
+            yield trx;
+          }
         }
       }
       await sleep(ms);
