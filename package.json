@@ -1,7 +1,7 @@
 {
   "name": "steemradar",
-  "version": "0.2.1",
-  "description": "A JavaScript library for Steem blockchain.",
+  "version": "1.0.0",
+  "description": "A JavaScript library for scanning and streaming Steem blockchain.",
   "main": "./src",
   "scripts": {
     "test": "jest --detectOpenHandles",
