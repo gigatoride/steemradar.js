@@ -52,7 +52,7 @@ function getFundsTracker(name, trxId, opts = {}) {
               if (isSenderMatch) {
                 latestCatch = trx.transaction_id;
                 nextTarget = trx;
-                linkedAccounts.push(latestTrxData.from);
+                linkedAccounts.push(latestTrxData.to);
                 yield trx;
               }
               if (targetTrx && !exchanges.includes(previousTrxData.to)) out = true;
