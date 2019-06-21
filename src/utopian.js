@@ -29,8 +29,8 @@ class Utopian {
             const metadata = JSON.parse(txData.json_metadata);
 
             const isUtopianContribution = metadata.category === 'utopian-io' || metadata.tags[0] === 'utopian-io';
-            const isUtopianCategory = metadata.tags.every(tag => {
-              config.utopian_tags.includes(tag);
+            const isUtopianCategory = metadata.tags.some(tag => {
+              return config.utopian_tags.includes(tag);
             });
 
             const isUtopianTargetCategoryMatch = !query.category || metadata.tags.includes(query.category);
