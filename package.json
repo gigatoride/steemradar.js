@@ -4,7 +4,7 @@
   "description": "A JavaScript library for scanning and streaming Steem blockchain.",
   "main": "./src",
   "scripts": {
-    "test": "jest --detectOpenHandles",
+    "test": "jest --ci --verbose --forceExit --detectOpenHandles",
     "doc": "documentation build ./src/index.js -f md -o ./doc/README.md",
     "postinstall": "node postinstall"
   },
