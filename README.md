@@ -1,5 +1,6 @@
 # SteemRadar.js
 
+[![Build Status](https://travis-ci.com/gigatoride/steemradar.js.svg?branch=master)](https://travis-ci.com/gigatoride/steemradar.js)
 [![NPM version](https://img.shields.io/npm/v/steemradar.svg)](https://www.npmjs.com/package/steemradar) [![GitHub license](https://img.shields.io/github/license/gigatoride/steemradar.js.svg)](https://github.com/gigatoride/steemradar.js/blob/master/LICENSE)
 [![GitHub Issues](https://img.shields.io/github/issues/gigatoride/steemradar.js.svg)](https://github.com/gigatoride/steemradar.js/issues)
 ![Downloads](https://img.shields.io/npm/dt/steemradar.svg)
