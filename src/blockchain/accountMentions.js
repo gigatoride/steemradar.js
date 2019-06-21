@@ -1,4 +1,3 @@
-const api = require('../helper');
 const { sleep, isValidAccountNames, readableStream } = require('../utils');
 
 /**
@@ -7,19 +6,20 @@ const { sleep, isValidAccountNames, readableStream } = require('../utils');
  * @returns {Stream.<Object>} - transaction
  * @memberof Scan.blockchain
  */
-function getAccountMentions(accounts) {
+module.exports = function(accounts) {
   if (accounts && isValidAccountNames(accounts)) throw new Error('An account name is not valid or exist.');
 
+  const scan = this.scan;
   let latestCatch;
-  const iterator = async function * (ms = 700) {
+  const iterator = async function * (ms = 800) {
     while (true) {
-      const transactions = await api.getTransactions();
+      const transactions = await scan.getTransactions();
       for (const trx of transactions) {
         const [txType, txData] = trx.operations[0];
-        const isContent = txType === 'comment';
         const isUnique = trx.transaction_id !== latestCatch;
+        const isContent = txType === 'comment';
         if (isUnique && isContent) {
-          const mentionAccounts = txData.body.match(/\B@[a-z0-9-.]+/gm);
+          const mentionAccounts = txData.body.match(/\B@[a-z0-9-.]+/g);
           const mentionTargets = accounts
             ? accounts.map(name => {
               return `@${name}`;
@@ -37,6 +37,4 @@ function getAccountMentions(accounts) {
   };
 
   return readableStream(iterator());
-}
-
-module.exports = getAccountMentions;
+};

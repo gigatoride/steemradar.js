@@ -1,8 +1,5 @@
 const steemradar = require('../src');
-
-const scan = new steemradar.Scan();
-
-jest.setTimeout(140000);
+const scan = new steemradar.Scan({ testMode: true });
 
 test('Detect any post', done => {
   const stream = scan.blockchain.getPosts();

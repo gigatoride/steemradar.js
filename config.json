@@ -1,6 +1,7 @@
 {
-  "node_url": "https://api.steemit.com",
-  "global_blacklist_api_url": "http://blacklist.usesteem.com",
+  "nodeURL": "https://api.steemit.com",
+  "blacklistURL": "http://blacklist.usesteem.com",
+  "testMode": false,
   "exchanges": [
     "blocktrades",
     "deepcrypto8",

@@ -1,27 +1,20 @@
-const getAccountActivity = require('./accountActivity');
-const getAccountCounter = require('./accountCounter');
-const getAccountMentions = require('./accountMentions');
-const getAccountSecurity = require('./accountSecurity');
-const getBlacklisted = require('./blacklisted');
-const getComments = require('./comments');
-const getFeedPublish = require('./feedPublish');
-const getFundsTracker = require('./fundsTracker');
-const getPosts = require('./posts');
-const getProfanity = require('./profanity');
-const getTransfers = require('./transfers');
-const getVotes = require('./votes');
+class Blockchain {
+  constructor(scan) {
+    this.scan = scan;
+  }
+}
 
-module.exports = {
-  getAccountActivity,
-  getAccountCounter,
-  getAccountMentions,
-  getAccountSecurity,
-  getBlacklisted,
-  getComments,
-  getFeedPublish,
-  getFundsTracker,
-  getPosts,
-  getProfanity,
-  getTransfers,
-  getVotes
-};
+Blockchain.prototype.getAccountActivity = require('./accountActivity');
+Blockchain.prototype.getAccountCounter = require('./accountCounter');
+Blockchain.prototype.getAccountMentions = require('./accountMentions');
+Blockchain.prototype.getAccountSecurity = require('./accountSecurity');
+Blockchain.prototype.getBlacklisted = require('./blacklisted');
+Blockchain.prototype.getComments = require('./comments');
+Blockchain.prototype.getFeedPublish = require('./feedPublish');
+Blockchain.prototype.getFundsTracker = require('./fundsTracker');
+Blockchain.prototype.getPosts = require('./posts');
+Blockchain.prototype.getProfanity = require('./profanity');
+Blockchain.prototype.getTransfers = require('./transfers');
+Blockchain.prototype.getVotes = require('./votes');
+
+module.exports = Blockchain;

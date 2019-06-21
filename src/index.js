@@ -1,1 +1,2 @@
-module.exports = require('./scan');
+exports.Utils = require('./utils');
+exports.Scan = require('./scan');

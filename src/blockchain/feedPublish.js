@@ -1,4 +1,3 @@
-const api = require('../helper');
 const { sleep, readableStream } = require('../utils');
 
 /**
@@ -6,11 +5,12 @@ const { sleep, readableStream } = require('../utils');
  * @returns {Stream.<Object>} - transaction
  * @memberof Scan.blockchain
  */
-function getFeedPublish() {
+module.exports = function() {
   let latestCatch;
+  const scan = this.scan;
   const iterator = async function * (ms = 700) {
     while (true) {
-      const transactions = await api.getTransactions();
+      const transactions = await scan.getTransactions();
       for (const trx of transactions) {
         const [txType] = trx.operations[0];
         const isUnique = trx.transaction_id !== latestCatch;
@@ -24,6 +24,4 @@ function getFeedPublish() {
   };
 
   return readableStream(iterator());
-}
-
-module.exports = getFeedPublish;
+};

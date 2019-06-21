@@ -1,4 +1,3 @@
-const api = require('./../helper');
 const { sleep, isValidAccountNames, readableStream } = require('../utils');
 
 /**
@@ -8,15 +7,16 @@ const { sleep, isValidAccountNames, readableStream } = require('../utils');
  * @returns {Stream.<Object>} - transaction
  * @memberof Scan.blockchain
  */
-function getVotes(accounts, targetWeight) {
+module.exports = function(accounts, targetWeight) {
   if (targetWeight && !isNaN(targetWeight)) throw new Error('weight is not a valid number');
 
   if (accounts && isValidAccountNames(accounts)) throw new Error('An account name is not valid or exist.');
 
   let latestCatch;
+  const scan = this.scan;
   const iterator = async function * (ms = 700) {
     while (true) {
-      const transactions = await api.getTransactions();
+      const transactions = await scan.getTransactions();
       for (const trx of transactions) {
         const [txType, txData] = trx.operations[0];
 
@@ -35,6 +35,4 @@ function getVotes(accounts, targetWeight) {
   };
 
   return readableStream(iterator());
-}
-
-module.exports = getVotes;
+};

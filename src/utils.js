@@ -3,9 +3,19 @@ const profanities = require('profanities');
 const { validateAccountName } = require('steem').utils;
 const config = require('./../config.json');
 const { Readable } = require('stream');
+const fs = require('fs');
 
 /** @private */
 module.exports = {
+  /**
+   * Better method for reading json files
+   */
+  readJson: (path, cb) => {
+    fs.readFile(require.resolve(path), (err, data) => {
+      if (err) cb(err);
+      else cb(null, JSON.parse(data));
+    });
+  },
   /**
    * Sleep for milliseconds
    * @param {Number} ms - milliseconds
@@ -31,9 +41,12 @@ module.exports = {
    * @param {String} broadcast - Steem broadcast content
    */
   isProfane: body => {
-    return !body || body.split(/\s/gm).some(word => {
-      return profanities.includes(word);
-    });
+    return (
+      !body ||
+      body.split(/\s/gm).some(word => {
+        return profanities.includes(word);
+      })
+    );
   },
 
   /**
@@ -44,7 +57,7 @@ module.exports = {
   isBlacklisted: name => {
     return new Promise((resolve, reject) => {
       http
-        .get(`${config.global_blacklist_api_url}/user/${name}`, res => {
+        .get(`${config.blacklistURL}/user/${name}`, res => {
           const { statusCode } = res;
           const contentType = res.headers['content-type'];
 

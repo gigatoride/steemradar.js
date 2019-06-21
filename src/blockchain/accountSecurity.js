@@ -1,4 +1,3 @@
-const api = require('../helper');
 const { sleep, isValidAccountNames, readableStream } = require('../utils');
 
 /**
@@ -7,15 +6,15 @@ const { sleep, isValidAccountNames, readableStream } = require('../utils');
  * @returns {Stream.<Object>} - transaction
  * @memberof Scan.blockchain
  */
-function getAccountSecurity(accounts) {
-  if (isValidAccountNames(accounts))
-    throw new Error('An account name is not valid or exist.');
+module.exports = function(accounts) {
+  if (isValidAccountNames(accounts)) throw new Error('An account name is not valid or exist.');
 
+  const scan = this.scan;
   let latestCatch;
   const iterator = async function * (ms = 700) {
     while (true) {
       const operationTypes = ['account_update', 'change_recovery_account', 'transfer_from_savings'];
-      const transactions = await api.getTransactions();
+      const transactions = await scan.getTransactions();
 
       for (const trx of transactions) {
         const [txType, txData] = trx.operations[0];
@@ -32,6 +31,4 @@ function getAccountSecurity(accounts) {
   };
 
   return readableStream(iterator());
-}
-
-module.exports = getAccountSecurity;
+};

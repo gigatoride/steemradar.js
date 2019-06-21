@@ -1,5 +1,3 @@
-// const iteratorStream = require('async-iterator-to-stream');
-const api = require('./../helper');
 const { sleep, isValidAccountNames, readableStream } = require('./../utils');
 /**
  * Scan blockchain for comments
@@ -8,7 +6,8 @@ const { sleep, isValidAccountNames, readableStream } = require('./../utils');
  * @returns {Stream.<Object>}
  * @memberof Scan.blockchain
  */
-function getComments(authors, parentAuthors) {
+module.exports = function(authors, parentAuthors) {
+  const scan = this.scan;
   if (authors && isValidAccountNames(authors)) throw new Error('An author account name is not valid or exist.');
   if (parentAuthors && isValidAccountNames(parentAuthors))
     throw new Error('A parent author account name is not valid or exist.');
@@ -16,7 +15,7 @@ function getComments(authors, parentAuthors) {
   let latestCatch;
   const iterator = async function * (ms = 700) {
     while (true) {
-      const transactions = await api.getTransactions();
+      const transactions = await scan.getTransactions();
       for (const trx of transactions) {
         const [txType, txData] = trx.operations[0];
 
@@ -33,6 +32,4 @@ function getComments(authors, parentAuthors) {
     }
   };
   return readableStream(iterator());
-}
-
-module.exports = getComments;
+};

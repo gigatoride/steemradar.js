@@ -7,7 +7,7 @@ const { sleep, isValidAccountNames, readableStream } = require('../utils');
  * @returns {Stream.<Object>} - transaction
  * @memberof Scan.blockchain
  */
-function getAccountActivity(names) {
+module.exports = function(names) {
   if (names && isValidAccountNames(names)) throw new Error('An account name is not valid.');
 
   let latestCatch = [];
@@ -27,6 +27,4 @@ function getAccountActivity(names) {
   };
 
   return readableStream(iterator());
-}
-
-module.exports = getAccountActivity;
+};

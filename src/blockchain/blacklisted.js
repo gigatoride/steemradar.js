@@ -1,4 +1,3 @@
-const blockchain = require('../helper');
 const { isBlacklisted, readableStream, sleep } = require('../utils');
 
 /**
@@ -6,11 +5,12 @@ const { isBlacklisted, readableStream, sleep } = require('../utils');
  * @returns {Stream.<Object>} - transaction
  * @memberof Scan.blockchain
  */
-function getBlacklisted() {
+module.exports = function() {
+  const scan = this.scan;
   const iterator = async function * (ms = 800) {
     let latestCatch;
     while (true) {
-      const transactions = await blockchain.getTransactions();
+      const transactions = await scan.getTransactions();
       for (const trx of transactions) {
         let account;
         const [txType, txData] = trx.operations[0];
@@ -36,6 +36,4 @@ function getBlacklisted() {
   };
 
   return readableStream(iterator());
-}
-
-module.exports = getBlacklisted;
+};

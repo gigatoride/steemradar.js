@@ -1,4 +1,3 @@
-const api = require('./../helper');
 const { readableStream, sleep } = require('../utils');
 const config = require('../../config.json');
 /**
@@ -11,7 +10,8 @@ const config = require('../../config.json');
  * @returns {Stream.<Object>} - transaction
  * @memberof Scan.blockchain
  */
-function getFundsTracker(name, trxId, opts = {}) {
+module.exports = function(name, trxId, opts = {}) {
+  const scan = this.scan;
   const exchanges = opts.exchanges || config.exchanges;
 
   // Returns latest user tansfer or by transfer id
@@ -27,7 +27,7 @@ function getFundsTracker(name, trxId, opts = {}) {
   let latestCatch;
   const iterator = async function * (ms = 700) {
     let out = false;
-    const recentTransactions = await api.getRecentAccountTransactions(name);
+    const recentTransactions = await scan.getRecentAccountTransactions(name);
     const targetTrx = findLatestTransfer(recentTransactions);
     if (targetTrx) {
       let nextTarget = targetTrx[1];
@@ -41,7 +41,7 @@ function getFundsTracker(name, trxId, opts = {}) {
       else
         while (!out) {
           const previousTrxData = nextTarget.operations[0][1];
-          const transactions = await api.getTransactions();
+          const transactions = await scan.getTransactions();
           for (const trx of transactions) {
             const [latestTrxType, latestTrxData] = trx.operations[0];
             const isUnique = latestCatch !== trx.transaction_id;
@@ -64,6 +64,4 @@ function getFundsTracker(name, trxId, opts = {}) {
   };
 
   return readableStream(iterator());
-}
-
-module.exports = getFundsTracker;
+};

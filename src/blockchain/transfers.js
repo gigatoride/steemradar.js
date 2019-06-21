@@ -1,5 +1,4 @@
 const { sleep, isValidAccountNames, readableStream } = require('../utils');
-const api = require('./../helper');
 
 /**
  * Scan blockchain transfers
@@ -10,9 +9,11 @@ const api = require('./../helper');
  * @returns {Stream.<Object>} - transaction
  * @memberof Scan.blockchain
  */
-function getTransfers(senders, receivers, minAmount, targetMemo) {
+module.exports = function(senders, receivers, minAmount, targetMemo) {
   if (receivers && isValidAccountNames(receivers)) throw new Error('Receivers are not valid or not an array.');
   if (senders && isValidAccountNames(senders)) throw new Error('Senders are not valid or not an array.');
+
+  const scan = this.scan;
 
   if (isNaN(parseInt(minAmount)) || !/(SBD|STEEM|\|)/.test(minAmount))
     throw new Error('Target amount is not valid expected 0.000 STEEM|SBD.');
@@ -20,13 +21,13 @@ function getTransfers(senders, receivers, minAmount, targetMemo) {
   let latestCatch;
   const iterator = async function * (ms = 700) {
     while (true) {
-      const transactions = await api.getTransactions();
+      const transactions = await scan.getTransactions();
       for (const trx of transactions) {
         const [txType, txData] = trx.operations[0];
         if (txType === 'transfer') {
           const { from, to, amount, memo } = txData;
 
-          const isUnique = trx.transaction_id !== latestCatch;
+          const isUnique = (trx.transaction_id || trx.trx_id) !== latestCatch;
           const isSendersExist = (senders && senders.includes(from)) || !senders;
           const isReceiversExist = (receivers && receivers.includes(to)) || !receivers;
           const isMemoMatch = (targetMemo && memo.includes(targetMemo)) || !targetMemo;
@@ -46,6 +47,4 @@ function getTransfers(senders, receivers, minAmount, targetMemo) {
   };
 
   return readableStream(iterator());
-}
-
-module.exports = getTransfers;
+};

@@ -1,4 +1,3 @@
-const api = require('../helper');
 const { sleep, readableStream } = require('../utils');
 
 /**
@@ -6,11 +5,12 @@ const { sleep, readableStream } = require('../utils');
  * @returns {Stream.<Int>} - account number
  * @memberof Scan.blockchain
  */
-function getAccountCounter() {
+module.exports = function() {
+  const scan = this.scan;
   let latestCatch;
   const iterator = async function * (ms = 700) {
     while (true) {
-      const count = await api.getAccountCount();
+      const count = await scan.getAccountCount();
       if (count && latestCatch !== count) {
         latestCatch = count;
         yield count;
@@ -21,6 +21,4 @@ function getAccountCounter() {
   };
 
   return readableStream(iterator());
-}
-
-module.exports = getAccountCounter;
+};
