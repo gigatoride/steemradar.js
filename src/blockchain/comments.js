@@ -1,4 +1,4 @@
-const { sleep, isValidAccountNames, readableStream } = require('./../utils');
+const { isValidAccountNames, readableStream } = require('./../utils');
 /**
  * Scan blockchain for comments
  * @param {?Array=} authors - steem account names for comment author
@@ -12,23 +12,14 @@ module.exports = function(authors, parentAuthors) {
   if (parentAuthors && isValidAccountNames(parentAuthors))
     throw new Error('A parent author account name is not valid or exist.');
 
-  let latestCatch;
-  const iterator = async function * (ms = 700) {
-    while (true) {
-      const transactions = await scan.getTransactions();
-      for (const trx of transactions) {
-        const [txType, txData] = trx.operations[0];
+  const iterator = async function * () {
+    for await (const trx of scan.getTransactions()) {
+      const [txType, txData] = trx.operations[0];
 
-        const isUnique = latestCatch !== trx.transaction_id;
-        const isComment = txType === 'comment' && txData.parent_author;
-        const isParentAuthorExist = (parentAuthors && parentAuthors.includes(txData.parentAuthor)) || !parentAuthors;
-        const isAuthorExist = (authors && authors.includes(txData.author)) || !authors;
-        if (isUnique && isComment && isParentAuthorExist && isAuthorExist) {
-          trx.transaction_id = latestCatch;
-          yield trx;
-        }
-      }
-      await sleep(ms);
+      const isComment = txType === 'comment' && txData.parent_author;
+      const isParentAuthorExist = (parentAuthors && parentAuthors.includes(txData.parentAuthor)) || !parentAuthors;
+      const isAuthorExist = (authors && authors.includes(txData.author)) || !authors;
+      if (isComment && isParentAuthorExist && isAuthorExist) yield trx;
     }
   };
   return readableStream(iterator());

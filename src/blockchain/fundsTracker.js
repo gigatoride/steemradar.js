@@ -1,4 +1,4 @@
-const { readableStream, sleep } = require('../utils');
+const { readableStream } = require('../utils');
 const config = require('../../config.json');
 /**
  * Tracking funds until it goes out of blockchain by 3rd party exchange
@@ -24,9 +24,7 @@ module.exports = function(name, trxId, opts = {}) {
     });
   };
 
-  let latestCatch;
-  const iterator = async function * (ms = 700) {
-    let out = false;
+  const iterator = async function * () {
     const recentTransactions = await scan.getRecentAccountTransactions(name);
     const targetTrx = findLatestTransfer(recentTransactions);
     if (targetTrx) {
@@ -37,29 +35,23 @@ module.exports = function(name, trxId, opts = {}) {
       yield nextTarget;
       const firstAccount = nextTarget.operations[0][1].to;
       let linkedAccounts = [firstAccount];
-      if (exchanges.includes(firstAccount)) out = true;
-      else
-        while (!out) {
-          const previousTrxData = nextTarget.operations[0][1];
-          const transactions = await scan.getTransactions();
-          for (const trx of transactions) {
-            const [latestTrxType, latestTrxData] = trx.operations[0];
-            const isUnique = latestCatch !== trx.transaction_id;
-            if (isUnique && latestTrxType === 'transfer') {
-              const isSenderMatch = opts.multi
-                ? linkedAccounts.includes(latestTrxData.from)
-                : latestTrxData.from === previousTrxData.to;
-              if (isSenderMatch) {
-                latestCatch = trx.transaction_id;
-                nextTarget = trx;
-                linkedAccounts.push(latestTrxData.to);
-                yield trx;
-              }
-              if (targetTrx && !exchanges.includes(previousTrxData.to)) out = true;
+      if (!exchanges.includes(firstAccount)) {
+        const previousTrxData = nextTarget.operations[0][1];
+        for await (const trx of scan.getTransactions()) {
+          const [latestTrxType, latestTrxData] = trx.operations[0];
+          if (latestTrxType === 'transfer') {
+            const isSenderMatch = opts.multi
+              ? linkedAccounts.includes(latestTrxData.from)
+              : latestTrxData.from === previousTrxData.to;
+            if (isSenderMatch) {
+              nextTarget = trx;
+              linkedAccounts.push(latestTrxData.to);
+              yield trx;
             }
+            if (targetTrx && !exchanges.includes(previousTrxData.to)) break;
           }
-          await sleep(ms);
         }
+      }
     }
   };
 

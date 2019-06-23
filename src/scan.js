@@ -2,7 +2,7 @@ const defaultConfig = require('./../config.json');
 const steem = require('steem');
 const Blockchain = require('./blockchain');
 const Utopian = require('./utopian');
-const { readJson } = require('./utils');
+const { readJson, sleep } = require('./utils');
 
 /**
  * @class
@@ -27,30 +27,42 @@ class Scan {
    * Blockchain transactions collector
    * @param {String} mode - transactions mode
    * @returns {Promise.<Array>} - resolves after collecting some block transactions
-   * @access private
+   * @access public
    */
-  getTransactions(mode) {
-    return new Promise((resolve, reject) => {
-      if (this.testMode)
-        readJson('./../testTransactions.json', (_err, transactions) => {
-          resolve(transactions);
-        });
-      else {
-        let transactions = [];
-        const release = steem.api.streamTransactions(mode || 'head', (err, res) => {
-          transactions.push(res);
-          !err ? resolve(transactions) : reject(err);
-          release();
-        });
+  async * getTransactions(mode, ms = 800) {
+    const blockTransactions = () => {
+      return new Promise((resolve, reject) => {
+        if (this.testMode)
+          readJson('./../testTransactions.json', (err, transactions) => {
+            !err ? resolve(transactions) : reject(err);
+          });
+        else {
+          let transactions = [];
+          const release = steem.api.streamTransactions(mode || 'head', (err, res) => {
+            transactions.push(res);
+            !err ? resolve(transactions) : reject(err);
+            release();
+          });
+        }
+      });
+    };
+
+    let currentBlockNumber = 0;
+    while (true) {
+      const transactions = await blockTransactions();
+      if (transactions[0].block_num > currentBlockNumber) {
+        currentBlockNumber = transactions[0].block_num;
+        for (const trx of transactions) yield trx;
       }
-    });
+      await sleep(ms);
+    }
   }
 
   /**
    * Blockchain account history transactions collector
    * @param {String} account - account name
    * @returns {Promise.<Array>} - resolves after getting account history
-   * @access private
+   * @access public
    */
   getRecentAccountTransactions(account, limit = 200) {
     const start = -1;
@@ -60,7 +72,7 @@ class Scan {
   /**
    * Blockchain account history transactions collector
    * @returns {Promise.<Array>} - resolves after getting account history
-   * @access private
+   * @access public
    */
   getAccountCount() {
     return steem.api.getAccountCountAsync();

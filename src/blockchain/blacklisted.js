@@ -1,4 +1,4 @@
-const { isBlacklisted, readableStream, sleep } = require('../utils');
+const { isBlacklisted, readableStream } = require('../utils');
 
 /**
  * Scan for any blacklisted user on blockchain latest blocks.
@@ -7,31 +7,25 @@ const { isBlacklisted, readableStream, sleep } = require('../utils');
  */
 module.exports = function() {
   const scan = this.scan;
-  const iterator = async function * (ms = 800) {
-    let latestCatch;
-    while (true) {
-      const transactions = await scan.getTransactions();
-      for (const trx of transactions) {
-        let account;
-        const [txType, txData] = trx.operations[0];
-        switch (txType) {
-          case 'transfer':
-            account = txData.from;
-            break;
-          case 'comment':
-            account = txData.author;
-            break;
-          default:
-            account = null;
-            break;
-        }
-        if (account && trx.transaction_id !== latestCatch) {
-          latestCatch = trx.transaction_id;
-          const res = await isBlacklisted(account);
-          if (res.blacklisted && res.blacklisted.length) yield trx;
-        }
+  const iterator = async function * () {
+    for await (const trx of scan.getTransactions()) {
+      let account;
+      const [txType, txData] = trx.operations[0];
+      switch (txType) {
+        case 'transfer':
+          account = txData.from;
+          break;
+        case 'comment':
+          account = txData.author;
+          break;
+        default:
+          account = null;
+          break;
       }
-      await sleep(ms);
+      if (account) {
+        const res = await isBlacklisted(account);
+        if (res.blacklisted && res.blacklisted.length) yield trx;
+      }
     }
   };
 

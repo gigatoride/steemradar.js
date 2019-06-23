@@ -7,12 +7,12 @@ const { sleep, readableStream } = require('../utils');
  */
 module.exports = function() {
   const scan = this.scan;
-  let latestCatch;
   const iterator = async function * (ms = 700) {
+    let current;
     while (true) {
       const count = await scan.getAccountCount();
-      if (count && latestCatch !== count) {
-        latestCatch = count;
+      if (count && current !== count) {
+        current = count;
         yield count;
       }
 

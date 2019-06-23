@@ -1,4 +1,4 @@
-const { sleep, isValidAccountNames, readableStream } = require('../utils');
+const { isValidAccountNames, readableStream } = require('../utils');
 
 /**
  * Get accounts votes or entire blockchain
@@ -12,25 +12,16 @@ module.exports = function(accounts, targetWeight) {
 
   if (accounts && isValidAccountNames(accounts)) throw new Error('An account name is not valid or exist.');
 
-  let latestCatch;
   const scan = this.scan;
-  const iterator = async function * (ms = 700) {
-    while (true) {
-      const transactions = await scan.getTransactions();
-      for (const trx of transactions) {
-        const [txType, txData] = trx.operations[0];
+  const iterator = async function * () {
+    for await (const trx of scan.getTransactions()) {
+      const [txType, txData] = trx.operations[0];
 
-        const isUnique = trx.transaction_id !== latestCatch;
-        const isVote = txType === 'vote';
-        const isAccountExist = (accounts && accounts.includes(txData.author)) || !accounts;
-        const isMinWeight = !targetWeight || targetWeight <= txData.weight;
+      const isVote = txType === 'vote';
+      const isAccountExist = (accounts && accounts.includes(txData.author)) || !accounts;
+      const isMinWeight = !targetWeight || targetWeight <= txData.weight;
 
-        if (isUnique && isVote && isAccountExist && isMinWeight) {
-          latestCatch = trx.transaction_id;
-          yield trx;
-        }
-      }
-      await sleep(ms);
+      if (isVote && isAccountExist && isMinWeight) yield trx;
     }
   };
 

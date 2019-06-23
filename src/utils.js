@@ -62,7 +62,8 @@ module.exports = {
           const contentType = res.headers['content-type'];
 
           let error;
-          if (statusCode !== 200) error = new Error('Request Failed.\n' + `Status Code: ${statusCode}`);
+          const codes = [200, 301, 302];
+          if (!codes.includes(statusCode)) error = new Error('Request Failed.\n' + `Status Code: ${statusCode}`);
           else if (!/^application\/json/.test(contentType))
             error = new Error('Invalid content-type.\n' + `Expected application/json but received ${contentType}`);
           if (error) {

@@ -1,4 +1,4 @@
-const { sleep, isValidAccountNames, readableStream } = require('./../utils');
+const { isValidAccountNames, readableStream } = require('./../utils');
 /**
  * Scan blockchain for posts
  * @param {?Array=} authors - steem account names for post author
@@ -8,22 +8,13 @@ const { sleep, isValidAccountNames, readableStream } = require('./../utils');
 module.exports = function(authors) {
   if (authors && isValidAccountNames(authors)) throw new Error('An author account name is not valid or exist.');
 
-  let latestCatch;
   const scan = this.scan;
-  const iterator = async function * (ms = 700) {
-    while (true) {
-      const transactions = await scan.getTransactions();
-      for (const trx of transactions) {
-        const [txType, txData] = trx.operations[0];
-        const isUnique = latestCatch !== trx.transaction_id;
-        const isPost = txType === 'comment' && !txData.parent_author;
-        const isAuthorExist = (authors && authors.includes(txData.author)) || !authors;
-        if (isUnique && isPost && isAuthorExist) {
-          trx.transaction_id = latestCatch;
-          yield trx;
-        }
-      }
-      await sleep(ms);
+  const iterator = async function * () {
+    for await (const trx of scan.getTransactions()) {
+      const [txType, txData] = trx.operations[0];
+      const isPost = txType === 'comment' && !txData.parent_author;
+      const isAuthorExist = (authors && authors.includes(txData.author)) || !authors;
+      if (isPost && isAuthorExist) yield trx;
     }
   };
   return readableStream(iterator());

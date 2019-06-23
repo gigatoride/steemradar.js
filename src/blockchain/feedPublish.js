@@ -1,4 +1,4 @@
-const { sleep, readableStream } = require('../utils');
+const { readableStream } = require('../utils');
 
 /**
  * Stream price feed
@@ -6,20 +6,11 @@ const { sleep, readableStream } = require('../utils');
  * @memberof Scan.blockchain
  */
 module.exports = function() {
-  let latestCatch;
   const scan = this.scan;
-  const iterator = async function * (ms = 700) {
-    while (true) {
-      const transactions = await scan.getTransactions();
-      for (const trx of transactions) {
-        const [txType] = trx.operations[0];
-        const isUnique = trx.transaction_id !== latestCatch;
-        if (isUnique & (txType === 'feed_publish')) {
-          latestCatch = trx.transaction_id;
-          yield trx;
-        }
-      }
-      await sleep(ms);
+  const iterator = async function * () {
+    for await (const trx of scan.getTransactions()) {
+      const [txType] = trx.operations[0];
+      if (txType === 'feed_publish') yield trx;
     }
   };
 
