@@ -29,7 +29,7 @@ class Scan {
    * @returns {Promise.<Array>} - resolves after collecting some block transactions
    * @access public
    */
-  async * getTransactions(mode, ms = 800) {
+  async * getTransactions(mode, ms = 1000) {
     const blockTransactions = () => {
       return new Promise((resolve, reject) => {
         if (this.testMode)
@@ -39,9 +39,11 @@ class Scan {
         else {
           let transactions = [];
           const release = steem.api.streamTransactions(mode || 'head', (err, res) => {
-            transactions.push(res);
-            !err ? resolve(transactions) : reject(err);
-            release();
+            if (!err) {
+              resolve(transactions);
+              transactions.push(res);
+              release();
+            }
           });
         }
       });
