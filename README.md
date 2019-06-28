@@ -31,7 +31,7 @@ npm install steemradar
 
 ```js
 const { Client } = require("steemradar"),
-  client = new Client({ nodeURL: "https://api.steemit.com" });
+  client = new Client({ nodeURL: "wss://anyx.io" });
 ```
 
 ### Settings
@@ -93,6 +93,7 @@ client.blockchain.settings.clear();
 
 |             | Type     | Custom Parent | Custom Child |
 | ----------- | -------- | ------------- | ------------ |
+| account     | count    |               |              |
 | transaction | transfer | funds         | track        |
 | transaction | transfer | memo          | profane      |
 | transaction | comment  | parent        |              |

@@ -31,6 +31,13 @@ test('Clear all blockchain settings', () => {
   expect(settings.get('streamOperation')).toBeFalsy();
 });
 
+test('Listen once for event account count', done => {
+  client.blockchain.once('account:count', count => {
+    expect(count).toBeGreaterThan(1200000);
+    done();
+  });
+});
+
 test('Listen once for event transaction once', done => {
   client.blockchain.once('transaction', trx => {
     expect(trx).toHaveProperty('block');

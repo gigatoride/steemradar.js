@@ -63,14 +63,14 @@ class SteemAPI {
    * Get current block number
    */
   async getCurrentBlockNum() {
-    const properties = await this.getDynamicGlobalProperties().catch(console.error);
+    const properties = await this.getDynamicGlobalProperties();
     return properties.last_irreversible_block_num;
   }
 
   /**
    * Get sequent block number
    */
-  async * getSequentBlockNum(ts = 4) {
+  async * getSequentBlockNum(ts = 2) {
     let current = await this.getCurrentBlockNum();
     let id = current;
     while (true) {
@@ -85,7 +85,7 @@ class SteemAPI {
    */
   async * getOperations() {
     for await (const num of this.getSequentBlockNum()) {
-      const operations = await this.getBlockOperations(num).catch(console.error);
+      const operations = await this.getBlockOperations(num);
       for (const op of operations) yield op;
     }
   }

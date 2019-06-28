@@ -144,9 +144,9 @@ class Blockchain extends EventEmitter {
    * Account counter event
    * @private
    */
-  async _emitAccountCount(ts = 1) {
+  async _emitAccountCount(ts = 3) {
     let current;
-    while (true) {
+    while (this.running) {
       try {
         const count = await this.client.api.getAccountCount();
         if (count && current !== count) {
@@ -194,14 +194,18 @@ class Blockchain extends EventEmitter {
    * @private
    */
   _start() {
-    try {
-      this.running = true;
-      this._emitAccountCount();
-      this._operationsFormatter();
-    } catch (error) {
-      this.running = false;
-      this.emit('error', error);
-    }
+    const retry = () => {
+      try {
+        this.running = true;
+        this._operationsFormatter();
+        this._emitAccountCount();
+      } catch (error) {
+        this.running = false;
+        this.emit('error', error);
+        retry();
+      }
+    };
+    retry();
   }
 }
 
