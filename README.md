@@ -5,7 +5,7 @@
 ![Downloads](https://img.shields.io/npm/dt/steemradar.svg)
 ![Powered by utopian.io](https://img.shields.io/badge/powered%20by-utopian.io-ff69b4.svg)
 
-A JavaScript library for scanning and streaming Steem blockchain.
+An event-driven lightweight library for streaming Steem blockchain.
 
 ## Installation
 
