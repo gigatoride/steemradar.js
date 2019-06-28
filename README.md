@@ -15,13 +15,13 @@ Using npm:
 npm install steemradar
 ```
 
+## RPC Servers
+
+[wss://appbasetest.timcliff.com](wss://appbasetest.timcliff.com) By Default
+
+[wss://anyx.io](wss://anyx.io)
+
 - Note: this library currently supports web sockets only
-
-## WebSocket RPC Servers
-
-wss://appbasetest.timcliff.com By Default
-
-wss://anyx.io
 
 ## API
 
@@ -55,19 +55,24 @@ The following command will set custom transfer options:
 ```js
 client.blockchain.setTransferOptions({
   senders: ["steem"],
-  receivers: ["steem"],
-  track: {
-    parentSender: ["steem"]
-  }
+  receivers: ["steem"]
+});
+```
+
+The following command will set custom funds track options:
+
+```js
+client.blockchain.setFundsTrackOptions({
+  parentSender: "steem"
 });
 ```
 
 - Note: All these commands you can call them more than once like using them in multiple cases for more flexibility, And all events will be reset by your latest options.
 
-Reset example:
+Reset all settings example:
 
 ```js
-client.blockchain.setTransferOptions({});
+client.blockchain.settings.clear();
 ```
 
 ### Flexible events
