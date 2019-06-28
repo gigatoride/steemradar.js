@@ -17,9 +17,9 @@ npm install steemradar
 
 ## RPC Servers
 
-[wss://appbasetest.timcliff.com](wss://appbasetest.timcliff.com) By Default
+[wss://anyx.io](wss://anyx.io) By Default
 
-[wss://anyx.io](wss://anyx.io)
+[wss://appbasetest.timcliff.com](wss://appbasetest.timcliff.com)
 
 - Note: this library currently supports web sockets only
 

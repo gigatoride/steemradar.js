@@ -1,5 +1,5 @@
 {
-  "nodeURL": "wss://appbasetest.timcliff.com",
+  "nodeURL": "wss://anyx.io",
   "blacklistURL": "http://blacklist.usesteem.com",
   "testMode": false,
   "exchanges": [
