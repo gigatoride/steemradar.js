@@ -20,6 +20,7 @@ npm install steemradar
 ## WebSocket RPC Servers
 
 wss://appbasetest.timcliff.com By Default
+
 wss://anyx.io
 
 ## API
