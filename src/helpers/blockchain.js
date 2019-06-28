@@ -10,7 +10,6 @@ class Blockchain extends EventEmitter {
     this.client = client;
     this.options = client.options;
     this.settings = client.settings;
-    this.isTrackingFunds = false;
     this._start();
   }
 
@@ -120,7 +119,12 @@ class Blockchain extends EventEmitter {
     if (customSenders.includes(from)) this._emitTransaction(trx, type);
     if (isProfanity(memo)) this._emitTransaction(trx, type, 'memo', 'profane');
 
-    if (this.isTrackingFunds) this._emitTransaction(trx, type, 'funds', 'track');
+    /**
+     * TODO:
+     * - Old funds track algorithm implementation
+     */
+    if (this.settings.funds.track.has('parentSender') && this.settings.funds.track.get('parentSender') === from)
+      this._emitTransaction(trx, type, 'funds', 'track');
   }
 
   /**
