@@ -1,6 +1,6 @@
 {
   "name": "steemradar",
-  "version": "1.0.5",
+  "version": "2.0.0",
   "description": "An event-driven JavaScript library for streaming Steem blockchain.",
   "main": "./src",
   "scripts": {
