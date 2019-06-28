@@ -1,136 +1,87 @@
-const steemradar = require('../src');
-const scan = new steemradar.Scan({ testMode: true });
+const { Client } = require('./../src');
+const client = new Client();
 
-const blockchain = scan.blockchain;
+jest.setTimeout(30000);
 
-test('Detect any post', done => {
-  const stream = blockchain.getPosts();
-  stream.on('data', trx => {
-    stream.pause();
-    stream.destroy();
+const settings = client.blockchain.settings;
+
+test('Set stream operations to false', () => {
+  expect(client.blockchain.setStreamOperations(true)).toBeUndefined();
+  expect(settings.get('streamOperation')).toBeTruthy();
+});
+
+test('Set funds track options by parent sender', () => {
+  expect(client.blockchain.setFundsTrackOptions({ parentSender: 'steem' })).toBeUndefined();
+  expect(settings.funds.track.has('parentSender')).toBeTruthy();
+});
+
+test('Set author name for comment options', () => {
+  expect(client.blockchain.setCommentOptions({ authors: ['steem'] })).toBeUndefined();
+  expect(settings.comment.has('authors')).toBeTruthy();
+});
+
+test('Set senders and receivers for transfer options', () => {
+  expect(client.blockchain.setTransferOptions({ senders: ['steem'], receivers: ['steem'] })).toBeUndefined();
+  expect(settings.transfer.has('senders')).toBeTruthy();
+  expect(settings.transfer.has('receivers')).toBeTruthy();
+});
+
+test('Clear all blockchain settings', () => {
+  expect(settings.clear()).toBeUndefined();
+  expect(settings.get('streamOperation')).toBeFalsy();
+});
+
+test('Listen once for event transaction once', done => {
+  client.blockchain.once('transaction', trx => {
+    expect(trx).toHaveProperty('block');
     done();
   });
 });
 
-test('Detect any comment', done => {
-  const stream = blockchain.getComments();
-  stream.on('data', trx => {
-    stream.pause();
-    stream.destroy();
+test('Listen once for event operation once', done => {
+  client.blockchain.setStreamOperations(true);
+  client.blockchain.once('transaction', (type, data) => {
+    expect(type).toBeDefined();
     done();
   });
 });
 
-test('Detect any transfer SBD or STEEM', done => {
-  let senders = null;
-  let receivers = null;
-  let minAmount = '0.001 SBD|STEEM';
-  let targetMemo = null;
-
-  const stream = blockchain.getTransfers(senders, receivers, minAmount, targetMemo);
-
-  stream.on('data', trx => {
-    stream.pause();
-    stream.destroy();
+test('Listen once for any vote by operation type', done => {
+  client.blockchain.setStreamOperations(true);
+  client.blockchain.once('transaction:vote', (type, data) => {
+    expect(type).toBe('vote');
     done();
   });
 });
 
-test('Detect latest blockchain votes', done => {
-  const stream = blockchain.getVotes(null, 0);
-  stream.on('data', trx => {
-    stream.pause();
-    stream.destroy();
+test('Listen once for any positive vote', done => {
+  client.blockchain.setStreamOperations(true);
+  client.blockchain.once('transaction:vote:positive', (type, data) => {
+    expect(data.weight).toBeGreaterThan(0);
     done();
   });
 });
 
-test('Detect latest account count', done => {
-  const stream = blockchain.getAccountCounter();
-  stream.on('data', count => {
-    stream.pause();
-    stream.destroy();
+test('Listen once for a child comment event', done => {
+  client.blockchain.setStreamOperations(true);
+  client.blockchain.once('transaction:comment:child', (type, data) => {
+    expect(data.parent_author).toBeTruthy();
     done();
   });
 });
 
-test('Detect global blacklisted accounts', done => {
-  const stream = blockchain.getBlacklisted();
-  stream.on('data', trx => {
-    stream.pause();
-    stream.destroy();
+test('Listen once for a parent comment event', done => {
+  client.blockchain.setStreamOperations(true);
+  client.blockchain.once('transaction:comment:parent', (type, data) => {
+    expect(data.parent_author).toBeFalsy();
     done();
   });
 });
 
-test('Detect any changes for accounts', done => {
-  const accounts = [
-    'utopian-io',
-    'blocktrades',
-    'steemmonsters',
-    'deepcrypto8',
-    'ned',
-    'dtube',
-    'steemcleaners',
-    'binance-hot',
-    'therising'
-  ];
-
-  const stream = blockchain.getAccountActivity(accounts);
-  stream.on('data', trx => {
-    stream.pause();
-    stream.destroy();
-    done();
-  });
-});
-
-test('Detect any mention for any account', done => {
-  const accounts = null;
-
-  const stream = blockchain.getAccountMentions(accounts);
-  stream.on('data', trx => {
-    stream.pause();
-    stream.destroy();
-    done();
-  });
-});
-
-test('Detect accounts security changes', done => {
-  const accounts = ['utopian-io', 'blocktrades', 'steemmonsters', 'binance-hot', 'ned', 'dtube', 'steemcleaners'];
-
-  const stream = blockchain.getAccountSecurity(accounts);
-  stream.on('data', trx => {
-    stream.pause();
-    stream.destroy();
-    done();
-  });
-});
-
-test('Detect feed publish prices', done => {
-  const stream = blockchain.getFeedPublish();
-  stream.on('data', trx => {
-    stream.pause();
-    stream.destroy();
-    done();
-  });
-});
-
-test('Detect public profane word', done => {
-  const stream = blockchain.getProfanity();
-
-  stream.on('data', trx => {
-    stream.pause();
-    stream.destroy();
-    done();
-  });
-});
-
-test('Detect funds movement on blockchain', done => {
-  const username = 'gigatoride';
-  const stream = blockchain.getFundsTracker(username);
-  stream.on('data', trx => {
-    stream.pause();
-    stream.destroy();
+test('Listen once for a blacklisted author comment event', done => {
+  client.blockchain.setStreamOperations(true);
+  client.blockchain.once('transaction:comment:author:blacklisted', (type, data) => {
+    expect(type).toBe('comment');
     done();
   });
 });

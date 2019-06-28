@@ -1,2 +1,1 @@
-exports.Utils = require('./utils');
-exports.Scan = require('./scan');
+exports.Client = require('./client');

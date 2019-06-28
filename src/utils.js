@@ -1,21 +1,9 @@
 const http = require('http');
 const profanities = require('profanities');
-const { validateAccountName } = require('steem').utils;
 const config = require('./../config.json');
-const { Readable } = require('stream');
-const fs = require('fs');
 
 /** @private */
 module.exports = {
-  /**
-   * Better method for reading json files
-   */
-  readJson: (path, cb) => {
-    fs.readFile(require.resolve(path), (err, data) => {
-      if (err) cb(err);
-      else cb(null, JSON.parse(data));
-    });
-  },
   /**
    * Sleep for milliseconds
    * @param {Number} ms - milliseconds
@@ -37,18 +25,18 @@ module.exports = {
     return arr.reduce((p, c) => p + c, 0) / arr.length;
   },
   /**
-   * Check for profane words in body
-   * @param {String} broadcast - Steem broadcast content
+   * All possible names of operations property
    */
-  isProfane: body => {
-    return (
-      !body ||
-      body.split(/\s/gm).some(word => {
-        return profanities.includes(word);
-      })
-    );
+  setOperation: trx => {
+    return trx.operation || trx.op || trx.operations[0];
   },
-
+  /**
+   * Checks if any mention exist in body
+   */
+  isMention: body => {
+    const mentions = body.match(/\B@[a-z0-9-.]+/g);
+    return mentions ? mentions.length : false;
+  },
   /**
    * Match global blacklisted names
    * @param {String} name - Steem account name
@@ -62,12 +50,11 @@ module.exports = {
           const contentType = res.headers['content-type'];
 
           let error;
-          const codes = [200, 301, 302];
-          if (!codes.includes(statusCode)) error = new Error('Request Failed.\n' + `Status Code: ${statusCode}`);
+          if (statusCode !== 200) error = new Error('Request Failed.\n' + `Status Code: ${statusCode}`);
           else if (!/^application\/json/.test(contentType))
             error = new Error('Invalid content-type.\n' + `Expected application/json but received ${contentType}`);
           if (error) {
-            console.error(error.message);
+            reject(error.message);
             // Consume response data to free up memory
             res.resume();
             return;
@@ -91,44 +78,20 @@ module.exports = {
     });
   },
   /**
-   * Account names validator
-   * @param {Array} accountNames
+   * Check for any profane in body
    */
-  isValidAccountNames: accountNames => {
-    return Array.isArray(accountNames) ? !accountNames.every(name => validateAccountName(name) === null) : false;
+  isProfanity: body => {
+    return (
+      !body ||
+      body.split(/\s/gm).some(word => {
+        return profanities.includes(word);
+      })
+    );
   },
   /**
-   * Creates a readable stream
+   * Get comment type parent or child
    */
-  readableStream: (iterable, opts) => {
-    let iterator;
-    if (iterable && iterable[Symbol.asyncIterator]) iterator = iterable[Symbol.asyncIterator]();
-    else if (iterable && iterable[Symbol.iterator]) iterator = iterable[Symbol.iterator]();
-    else throw new Error(iterable);
-
-    const readable = new Readable({
-      objectMode: true,
-      ...opts
-    });
-    // Reading boolean to protect against _read
-    // being called before last iteration completion.
-    let reading = false;
-    readable._read = function() {
-      if (!reading) {
-        reading = true;
-        next();
-      }
-    };
-    async function next() {
-      try {
-        const { value, done } = await iterator.next();
-        if (done) readable.push(null);
-        else if (readable.push(await value)) next();
-        else reading = false;
-      } catch (err) {
-        readable.destroy(err);
-      }
-    }
-    return readable;
+  getCommentType: data => {
+    return data.parent_author ? 'child' : 'parent';
   }
 };

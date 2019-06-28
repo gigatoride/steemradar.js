@@ -1,5 +1,5 @@
 {
-  "nodeURL": "https://api.steemit.com",
+  "nodeURL": "wss://appbasetest.timcliff.com",
   "blacklistURL": "http://blacklist.usesteem.com",
   "testMode": false,
   "exchanges": [
@@ -16,7 +16,7 @@
     "hitbtc-exchange",
     "upbituserwallet"
   ],
-  "utopian_tags": [
+  "utopianTags": [
     "development",
     "copywriting",
     "graphics",

@@ -1,12 +1,10 @@
 {
   "name": "steemradar",
   "version": "1.0.5",
-  "description": "A JavaScript library for scanning and streaming Steem blockchain.",
+  "description": "An event-driven JavaScript library for streaming Steem blockchain.",
   "main": "./src",
   "scripts": {
-    "test": "jest --ci --verbose --forceExit --detectOpenHandles",
-    "doc": "documentation build ./src/index.js -f md -o ./doc/README.md",
-    "postinstall": "node postinstall"
+    "test": "jest --ci --verbose --forceExit --detectOpenHandles"
   },
   "repository": {
     "type": "git",
@@ -28,17 +26,15 @@
   "homepage": "https://github.com/gigatoride/steemradar.js#readme",
   "dependencies": {
     "profanities": "^2.11.0",
-    "steem": "^0.7.5"
+    "rpc-websockets": "^4.4.0"
   },
   "devDependencies": {
-    "documentation": "^11.0.1",
     "eslint": "^5.16.0",
     "eslint-config-standard": "^12.0.0",
     "eslint-plugin-import": "^2.14.0",
     "eslint-plugin-node": "^7.0.1",
     "eslint-plugin-promise": "^4.0.1",
     "eslint-plugin-standard": "^4.0.0",
-    "jest": "^24.8.0",
-    "jsdoc": "^3.5.5"
+    "jest": "^24.8.0"
   }
 }
