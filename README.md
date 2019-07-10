@@ -98,6 +98,7 @@ client.blockchain.settings.clear();
 | transaction | transfer | memo          | profane      |
 | transaction | comment  | parent        |              |
 | transaction | comment  | child         |              |
+| transaction | comment  | body          | mention      |
 | transaction | comment  | body          | profane      |
 | transaction | comment  | author        | blacklisted  |
 | transaction | vote     | positive      |              |

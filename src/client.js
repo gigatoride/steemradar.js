@@ -19,12 +19,16 @@ class Client {
   async _setTransporter(options) {
     options.nodeURL = options.nodeURL || defaultConfig.nodeURL;
     if (options.nodeURL.match('^((https|http)?://)'))
-      throw new Error('Invalid `nodeURL`, `http(s)` protocol currently not supported, please use `wss` or `ws`');
+      throw new Error(
+        'Invalid `nodeURL`, `http(s)` protocol currently not supported, please use `wss` or `ws`'
+      );
     if (!options.nodeURL.match('^((wss|ws)?://)'))
-      throw new Error('Invalid `nodeURL`, url should be a websocket `wss` or `ws`');
+      throw new Error(
+        'Invalid `nodeURL`, url should be a websocket `wss` or `ws`'
+      );
     else options.transportType = 'ws';
 
-    this.api = new SteemAPI(options);
+    this.api = new SteemAPI(options, this.blockchain);
   }
 }
 

@@ -2,9 +2,10 @@ const { sleep } = require('./../utils');
 const Transport = require('./transport');
 
 class SteemAPI {
-  constructor(options = {}) {
-    if (typeof options !== 'object') throw new Error('InvalidArgument: options should be a valid `object`');
-    this.transport = new Transport(options);
+  constructor(options = {}, blockchain) {
+    if (typeof options !== 'object')
+      throw new Error('InvalidArgument: options should be a valid `object`');
+    this.transport = new Transport(options, blockchain);
   }
 
   /**

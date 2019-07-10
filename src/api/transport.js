@@ -1,10 +1,12 @@
 const WebSocket = require('rpc-websockets').Client;
 
 class Transport {
-  constructor(opts = {}) {
-    if (opts.transportType !== 'ws') throw new Error(`Unsupported transport type.`);
+  constructor(opts = {}, blockchain) {
+    if (opts.transportType !== 'ws')
+      throw new Error(`Unsupported transport type.`);
 
     this.options = opts;
+    this.blockchain = blockchain;
   }
 
   /**
@@ -15,7 +17,10 @@ class Transport {
 
     if (this.options.transportType)
       this._start = new Promise((resolve, reject) => {
-        this.ws = new WebSocket(this.options.nodeURL);
+        this.ws = new WebSocket(this.options.nodeURL, {
+          reconnect: true,
+          max_reconnects: 0
+        });
         this.ws
           .on('open', () => {
             this.isWebSocketReady = true;
@@ -51,15 +56,14 @@ class Transport {
    * Listener for error event
    */
   onError(error) {
-    this.stop();
-    throw new Error(error);
+    this.blockchain.emit('error', error);
   }
 
   /**
    * Listener for close event
    */
   onClose() {
-    throw new Error('Connection was closed');
+    this.blockchain.emit('close', 'Connection was closed. retrying...');
   }
 
   /**
