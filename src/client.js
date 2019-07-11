@@ -28,7 +28,7 @@ class Client {
       );
     else options.transportType = 'ws';
 
-    this.api = new SteemAPI(options, this.blockchain);
+    this.api = new SteemAPI(options);
   }
 }
 
