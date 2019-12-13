@@ -3,7 +3,6 @@
 [![Build Status](https://travis-ci.org/gigatoride/steemradar.js.svg?branch=master)](https://travis-ci.org/gigatoride/steemradar.js)
 [![NPM version](https://img.shields.io/npm/v/steemradar.svg)](https://www.npmjs.com/package/steemradar) [![GitHub license](https://img.shields.io/github/license/gigatoride/steemradar.js.svg)](https://github.com/gigatoride/steemradar.js/blob/master/LICENSE)
 ![Downloads](https://img.shields.io/npm/dt/steemradar.svg)
-![Powered by utopian.io](https://img.shields.io/badge/powered%20by-utopian.io-ff69b4.svg)
 
 An event-driven lightweight library for streaming Steem blockchain.
 
